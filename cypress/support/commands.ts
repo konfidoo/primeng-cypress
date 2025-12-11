@@ -1,4 +1,5 @@
 /// <reference types="cypress" />
+// Reference moved to cypress/support/index.d.ts; this file no longer needs a path reference
 // ***********************************************
 // This example commands.ts shows you how to
 // create various custom commands and overwrite
@@ -35,3 +36,7 @@
 //     }
 //   }
 // }
+
+import {registerPrimeNGCommands} from '../../src/commands';
+
+registerPrimeNGCommands();

@@ -30,7 +30,8 @@ declare global {
   }
 }
 
-Cypress.Commands.add('mount', mount)
+// Use globalThis to access Cypress at runtime to avoid using the namespace as a value in TS
+;(globalThis as any).Cypress.Commands.add('mount', mount)
 
 // Example use:
 // cy.mount(MyComponent)
