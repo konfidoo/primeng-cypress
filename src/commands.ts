@@ -28,11 +28,7 @@ export function registerPrimeNGCommands(): void {
   });
 
   // Add chainable .pButton() method
-  Cypress.Commands.addAll({
-    prevSubject: 'element'
-  }, {
-    pButton(subject: any, options?: NgButtonOptions) {
-      return pButtonCore(cy.wrap(subject), options);
-    }
+  Cypress.Commands.add('pButton', { prevSubject: 'element' }, (subject: any, options?: NgButtonOptions) => {
+    return pButtonCore(cy.wrap(subject), options);
   });
 }
