@@ -1,0 +1,33 @@
+{
+  "name": "primeng-cypress",
+  "version": "1.0.0",
+  "description": "Cypress test function for primeNG components",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "prepare": "npm run build",
+    "test": "echo \"No tests specified yet\" && exit 0"
+  },
+  "keywords": [
+    "cypress",
+    "primeng",
+    "testing",
+    "angular",
+    "e2e"
+  ],
+  "peerDependencies": {
+    "cypress": ">=10.0.0",
+    "primeng": ">=17.0.0"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@angular/common": "^21.0.4",
+    "@angular/core": "^21.0.4",
+    "@types/node": "^25.0.0",
+    "cypress": "^15.7.1",
+    "primeng": "^21.0.1",
+    "typescript": "^5.9.3"
+  }
+}
