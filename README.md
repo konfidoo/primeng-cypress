@@ -1,144 +1,59 @@
-# primeng-cypress
+# PrimengCypress
 
-[![Pull Request Tests](https://github.com/nblum/primeng-cypress/actions/workflows/pr-tests.yml/badge.svg)](https://github.com/nblum/primeng-cypress/actions/workflows/pr-tests.yml)
+This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.3.
 
-Cypress test functions for PrimeNG components. This library provides easy-to-use test helpers for testing PrimeNG UI components in Cypress.
+## Development server
 
-## Installation
-
-```bash
-npm install --save-dev primeng-cypress
-```
-
-## Requirements
-
-- Cypress >= 10.0.0
-- PrimeNG >= 17.0.0
-
-## Setup
-
-### Register Cypress Commands (Recommended)
-
-To use `cy.pButton()` and chainable `.pButton()` syntax, register the commands in your `cypress/support/e2e.ts` or `cypress/support/commands.ts` file:
-
-```typescript
-import { registerPrimeNGCommands } from 'primeng-cypress';
-
-registerPrimeNGCommands();
-```
-
-Then add the type definitions in your `cypress/support/e2e.ts` or at the top of your test file:
-
-```typescript
-/// <reference types="primeng-cypress/dist/cypress" />
-```
-
-### Direct Function Import (Alternative)
-
-You can also import and use the test functions directly without registering commands:
-
-```typescript
-import { pButton } from 'primeng-cypress';
-```
-
-## Usage
-
-### pButton
-
-Test helper for PrimeNG Button component (`p-button`).
-
-#### API
-
-**Direct function:**
-```typescript
-pButton(selector: string | Cypress.Chainable, options?: NgButtonOptions)
-```
-
-**Cypress command (after registration):**
-```typescript
-cy.pButton(selector: string, options?: NgButtonOptions)
-```
-
-**Chainable method (after registration):**
-```typescript
-cy.get(selector).pButton(options?: NgButtonOptions)
-```
-
-#### Options
-
-```typescript
-interface NgButtonOptions {
-  disabled?: boolean;    // Check if button is disabled/enabled
-  click?: boolean;       // Click the button
-  expectLabel?: string;  // Verify button label text
-}
-```
-
-#### Examples
-
-**Using direct function:**
-```typescript
-import { pButton } from 'primeng-cypress';
-
-pButton('#submit-btn', { expectLabel: 'Submit' });
-pButton('.cancel-btn', { disabled: true, expectLabel: 'Cancel' });
-```
-
-**Using cy.pButton() command:**
-```typescript
-cy.pButton('#submit-btn', { expectLabel: 'Submit', click: true });
-cy.pButton('.cancel-btn', { disabled: true });
-```
-
-**Using chainable .pButton() method:**
-```typescript
-cy.get('#submit-btn').pButton({ expectLabel: 'Submit', click: true });
-cy.get('.cancel-btn').pButton({ disabled: true, expectLabel: 'Cancel' });
-
-// Chain with other Cypress commands
-cy.get('.container')
-  .find('button.primary')
-  .pButton({ expectLabel: 'Save', click: true });
-```
-
-**Complete test example:**
-```typescript
-it('should submit form with button click', () => {
-  cy.visit('/form-page');
-  
-  // Fill form
-  cy.get('#name').type('John Doe');
-  
-  // Test and click submit button using chainable syntax
-  cy.get('#submit-form').pButton({
-    disabled: false,
-    expectLabel: 'Submit Form',
-    click: true
-  });
-  
-  // Verify success
-  cy.get('.success-message').should('be.visible');
-});
-```
-
-## Examples
-
-See the `examples/` directory for more usage examples.
-
-## Development
-
-### Build
+To start a local development server, run:
 
 ```bash
-npm run build
+ng serve
 ```
 
-### Structure
+Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
 
-- `src/` - TypeScript source files
-- `dist/` - Compiled JavaScript and type definitions
-- `examples/` - Example test files
+## Code scaffolding
 
-## License
+Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
 
-ISC
+```bash
+ng generate component component-name
+```
+
+For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+
+```bash
+ng generate --help
+```
+
+## Building
+
+To build the project run:
+
+```bash
+ng build
+```
+
+This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+
+## Running unit tests
+
+To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+
+```bash
+ng test
+```
+
+## Running end-to-end tests
+
+For end-to-end (e2e) testing, run:
+
+```bash
+ng e2e
+```
+
+Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+
+## Additional Resources
+
+For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
