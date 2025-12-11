@@ -22,13 +22,15 @@ export function registerPrimeNGCommands(): void {
     throw new Error('Cypress is not available. Make sure to call this function in a Cypress environment.');
   }
 
-  // Add cy.pButton() command
+  // Add cy.pButton() command (parent command without prevSubject)
   Cypress.Commands.add('pButton', (selector: string, options?: NgButtonOptions) => {
     return pButtonCore(cy.get(selector), options);
   });
 
-  // Add chainable .pButton() method
+  // Add chainable .pButton() method (child command with prevSubject: 'element')
+  // Note: Cypress supports registering the same command name with different prevSubject options
   Cypress.Commands.add('pButton', { prevSubject: 'element' }, (subject: any, options?: NgButtonOptions) => {
+    // Subject is already a jQuery element from previous command, wrap it to get Cypress chainable
     return pButtonCore(cy.wrap(subject), options);
   });
 }
