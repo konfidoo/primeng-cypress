@@ -1,5 +1,7 @@
 # primeng-cypress
 
+[![Pull Request Tests](https://github.com/nblum/primeng-cypress/actions/workflows/pr-tests.yml/badge.svg)](https://github.com/nblum/primeng-cypress/actions/workflows/pr-tests.yml)
+
 Cypress test functions for PrimeNG components. This library provides easy-to-use test helpers for testing PrimeNG UI components in Cypress.
 
 ## Installation
