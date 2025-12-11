@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && cp src/cypress.d.ts dist/cypress.d.ts",
     "prepare": "npm run build",
     "test": "echo \"No tests specified yet\" && exit 0"
   },

@@ -6,3 +6,4 @@
 
 export { pButton } from './pButton';
 export { NgButtonOptions } from './types';
+export { registerPrimeNGCommands } from './commands';
