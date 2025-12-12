@@ -80,54 +80,118 @@ import {pButton} from 'primeng-cypress'
 
 ### 2) Use the library during local development (recommended when working on this repo)
 
-- Option A: `npm link`
-  - From this repo:
+This project already builds type declarations into `lib/` and `package.json` contains `main`, `types` and `files` so
+consuming projects can pick up `lib/index.js` and `lib/index.d.ts` automatically. Below are reliable copy/paste
+steps for local development.
 
-```bash
-# from primeng-cypress root
-npm link
-```
+#### Option A — recommended: `npm link` (quick iterative development)
 
-- In the consuming project:
+1. In this repo: build the library and register a global link
 
-```bash
-npm link primeng-cypress
-```
+   ```bash
+   cd /path/to/primeng-cypress
+   npm run build:lib   # builds lib/*.js and lib/*.d.ts
+   npm link            # registers a global symlink for primeng-cypress
+   ```
 
-- Then import like the published package (see above).
+2. In the consuming project: link the package
 
-- Option B: Use a Git dependency in `package.json` of the other project:
+   ```bash
+   cd /path/to/consumer-project
+   # remove any existing installation first to avoid shadowing
+   rm -rf node_modules/primeng-cypress
+   npm link primeng-cypress
+   ```
 
-```json
-{
+3. In the consuming project's Cypress support file (runtime registration):
+
+   ```ts
+   import { registerPrimeNGCommands } from 'primeng-cypress'
+   registerPrimeNGCommands()
+   ```
+
+4. If you change source in `primeng-cypress`: rebuild and (sometimes) re-run `npm link` in the library repo so the
+   consumer sees updated files:
+
+   ```bash
+   # in primeng-cypress
+   npm run build:lib
+   # optionally re-run npm link if you changed package.json or global link
+   npm link
+   ```
+
+#### Option B — alternative stable approaches
+
+- Use `npm pack` and install the generated tarball in the consumer project:
+
+  ```bash
+  # in primeng-cypress
+  npm pack
+  # in consumer (install the generated file)
+  npm install /path/to/primeng-cypress/primeng-cypress-0.0.0.tgz
+  ```
+
+- Use a file: dependency in the consumer's `package.json`:
+
+  ```json
   "devDependencies": {
-    "primeng-cypress": "git+ssh://git@example.com/you/primeng-cypress.git#main"
+    "primeng-cypress": "file:../path/to/primeng-cypress"
   }
-}
-```
+  ```
 
-After installing, import `registerPrimeNGCommands` as shown above.
+  then run `npm install`.
+
+- If the consumer uses `pnpm` or `yarn`, use `pnpm link` / `yarn link` equivalents instead of `npm link`.
 
 ### TypeScript / IDE integration (important)
 
 To get full TypeScript support and editor autocompletion for the custom commands (e.g. `cy.pButton` and `.pButton()`):
 
-- Make sure the consuming project picks up the library's `.d.ts` declarations (this project exposes them in
-  `lib/commands/cypress.d.ts`).
-- In many setups you can simply import `registerPrimeNGCommands()` in your `cypress/support/commands.ts` and ensure the
-  project's `tsconfig.json` includes the `cypress/` folder. Example `tsconfig.json` additions:
+- This project exposes the declaration for the Cypress augmentations at `lib/commands/cypress.d.ts` and the package root
+  types file `lib/index.d.ts` references it. After linking/installing the consumer should have `node_modules/primeng-cypress/lib/commands/cypress.d.ts`.
 
-```jsonc
-{
-  "include": [
-    "cypress/**/*.ts",
-    "node_modules/primeng-cypress/lib/**/*.d.ts"
-  ]
-}
-```
+- If your editor/TS server does not pick up the augmentation automatically, add the following to the consumer's
+  `tsconfig.json` `include` (copy/paste):
 
-- If the editor does not show `cy.pButton`, try restarting the TypeScript server (in VS Code: Command Palette → "
-  TypeScript: Restart TS server").
+  ```jsonc
+  {
+    "include": [
+      "cypress/**/*.ts",
+      "node_modules/primeng-cypress/lib/**/*.d.ts",
+      "...other includes..."
+    ]
+  }
+  ```
+
+- Alternatively, add the package lib folder to `typeRoots` (less common):
+
+  ```jsonc
+  {
+    "compilerOptions": {
+      "typeRoots": [
+        "node_modules/@types",
+        "node_modules/primeng-cypress/lib"
+      ]
+    }
+  }
+  ```
+
+- After changing `tsconfig.json` or after linking, restart the TypeScript server in your editor (VS Code: Command Palette →
+  "TypeScript: Restart TS server").
+
+### Quick troubleshooting (local usage)
+
+- If you see "Property 'pButton' does not exist on type 'Chainable'":
+  1. Ensure `node_modules/primeng-cypress/lib/commands/cypress.d.ts` exists in the consumer project.
+  2. Ensure your `tsconfig.json` includes that path (see snippet above).
+  3. Restart the TypeScript server.
+  4. Ensure you call `registerPrimeNGCommands()` in the Cypress support file so the runtime command exists.
+
+- If the link doesn't resolve (module not found):
+  - Ensure you ran `npm link` in the library and `npm link primeng-cypress` in the consumer.
+  - Verify `ls -l node_modules/primeng-cypress` in the consumer shows a symlink to your local repo.
+
+- If you prefer not to use linking or your package manager behaves differently (pnpm): use `npm pack` or `file:` install.
 
 ## Example usage in a test
 

@@ -1,6 +1,11 @@
 {
   "name": "primeng-cypress",
   "version": "0.0.0",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "lib"
+  ],
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
