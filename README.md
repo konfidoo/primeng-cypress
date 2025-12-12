@@ -1,5 +1,7 @@
 # primeng-cypress
 
+[![Pull Request Tests](https://github.com/nblum/primeng-cypress/actions/workflows/ci.yml/badge.svg)](https://github.com/nblum/primeng-cypress/actions/workflows/ci.yml)
+
 A lightweight helper library that provides Cypress test helpers for PrimeNG components (example: `pButton`).
 
 This README explains how to run the included component tests locally and how to use this library from another project (
