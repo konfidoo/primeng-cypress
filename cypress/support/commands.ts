@@ -37,6 +37,7 @@
 //   }
 // }
 
+import './commands-augment';
 import {registerPrimeNGCommands} from '../../src/commands';
 
 registerPrimeNGCommands();

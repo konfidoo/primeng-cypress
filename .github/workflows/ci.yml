@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
 
     steps:
@@ -29,8 +29,9 @@ jobs:
       - name: Build library
         run: npm run build:lib
 
-      - name: Run tests
-        run: npm test -- --watch=false
+      - name: Run Cypress component tests
+        uses: cypress-io/github-action@v5
+        with:
+          command: npm test
         env:
           CI: true
-
