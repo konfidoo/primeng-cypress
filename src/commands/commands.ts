@@ -1,3 +1,6 @@
+// filepath: /home/nico-blum/projects/primeng-cypress/lib/commands/commands.ts
+// Register Cypress commands for PrimeNG components
+
 import { NgButtonOptions } from './types';
 import { pButtonCore } from './pButton';
 
@@ -7,9 +10,9 @@ declare var cy: any;
 
 /**
  * Register PrimeNG Cypress commands
- * 
+ *
  * Call this function in your cypress/support/e2e.ts or cypress/support/commands.ts file:
- * 
+ *
  * @example
  * ```typescript
  * import { registerPrimeNGCommands } from 'primeng-cypress';
@@ -28,9 +31,9 @@ export function registerPrimeNGCommands(): void {
   });
 
   // Add chainable .pButton() method (child command with prevSubject: 'element')
-  // Note: Cypress supports registering the same command name with different prevSubject options
   Cypress.Commands.add('pButton', { prevSubject: 'element' }, (subject: any, options?: NgButtonOptions) => {
     // Subject is already a jQuery element from previous command, wrap it to get Cypress chainable
     return pButtonCore(cy.wrap(subject), options);
   });
 }
+

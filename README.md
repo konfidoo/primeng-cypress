@@ -1,144 +1,174 @@
 # primeng-cypress
 
-[![Pull Request Tests](https://github.com/nblum/primeng-cypress/actions/workflows/pr-tests.yml/badge.svg)](https://github.com/nblum/primeng-cypress/actions/workflows/pr-tests.yml)
+[![Pull Request Tests](https://github.com/nblum/primeng-cypress/actions/workflows/ci.yml/badge.svg)](https://github.com/nblum/primeng-cypress/actions/workflows/ci.yml)
 
-Cypress test functions for PrimeNG components. This library provides easy-to-use test helpers for testing PrimeNG UI components in Cypress.
+A lightweight helper library that provides Cypress test helpers for PrimeNG components (example: `pButton`).
 
-## Installation
+This README explains how to run the included component tests locally and how to use this library from another project (
+locally during development or as an installed dependency).
+
+## Contents
+
+- `lib/commands` - implementation and types for commands such as `pButton` and `registerPrimeNGCommands()`
+- `cypress/` - example Cypress tests and support files that show how to register commands and mount Angular components
+
+## Prerequisites
+
+- Node.js (>= 16 recommended)
+- npm or pnpm
+- A working Cypress setup (this repo already includes `cypress.config.ts`)
+
+## Install dependencies
+
+From the project root:
 
 ```bash
-npm install --save-dev primeng-cypress
+npm install
 ```
 
-## Requirements
+or with pnpm:
 
-- Cypress >= 10.0.0
-- PrimeNG >= 17.0.0
-
-## Setup
-
-### Register Cypress Commands (Recommended)
-
-To use `cy.pButton()` and chainable `.pButton()` syntax, register the commands in your `cypress/support/e2e.ts` or `cypress/support/commands.ts` file:
-
-```typescript
-import { registerPrimeNGCommands } from 'primeng-cypress';
-
-registerPrimeNGCommands();
+```bash
+pnpm install
 ```
 
-Then add the type definitions in your `cypress/support/e2e.ts` or at the top of your test file:
+## Run the example tests (local)
 
-```typescript
-/// <reference types="primeng-cypress/dist/cypress" />
+Open Cypress GUI:
+
+```bash
+npx cypress open
 ```
 
-### Direct Function Import (Alternative)
+Run headless:
 
-You can also import and use the test functions directly without registering commands:
-
-```typescript
-import { pButton } from 'primeng-cypress';
+```bash
+npx cypress run
 ```
 
-## Usage
+The example spec `cypress/pButton.cy.ts` uses `cypress/angular`'s `mount` helper. The support file
+`cypress/support/commands.ts` already registers the PrimeNG commands by calling `registerPrimeNGCommands()`.
 
-### pButton
+## How to use this library in another project
 
-Test helper for PrimeNG Button component (`p-button`).
+There are multiple ways to consume this helper library from another project:
 
-#### API
+### 1) As a published package
 
-**Direct function:**
-```typescript
-pButton(selector: string | Cypress.Chainable, options?: NgButtonOptions)
+If this repository is published to npm (example name `primeng-cypress`), simply install it and import the helper in your
+Cypress support file:
+
+```bash
+npm install primeng-cypress --save-dev
 ```
 
-**Cypress command (after registration):**
-```typescript
-cy.pButton(selector: string, options?: NgButtonOptions)
+Then in your `cypress/support/commands.ts` (or `cypress/support/e2e.ts`) add:
+
+```ts
+import {registerPrimeNGCommands} from 'primeng-cypress'
+
+registerPrimeNGCommands()
 ```
 
-**Chainable method (after registration):**
-```typescript
-cy.get(selector).pButton(options?: NgButtonOptions)
+This will register the `cy.pButton(...)` parent command and the chainable `.pButton()` for element subjects.
+
+If the package exports other helpers (for example `pButton` for direct usage), import them from the package root:
+
+```ts
+import {pButton} from 'primeng-cypress'
 ```
 
-#### Options
+### 2) Use the library during local development (recommended when working on this repo)
 
-```typescript
-interface NgButtonOptions {
-  disabled?: boolean;    // Check if button is disabled/enabled
-  click?: boolean;       // Click the button
-  expectLabel?: string;  // Verify button label text
+- Option A: `npm link`
+  - From this repo:
+
+```bash
+# from primeng-cypress root
+npm link
+```
+
+- In the consuming project:
+
+```bash
+npm link primeng-cypress
+```
+
+- Then import like the published package (see above).
+
+- Option B: Use a Git dependency in `package.json` of the other project:
+
+```json
+{
+  "devDependencies": {
+    "primeng-cypress": "git+ssh://git@example.com/you/primeng-cypress.git#main"
+  }
 }
 ```
 
-#### Examples
+After installing, import `registerPrimeNGCommands` as shown above.
 
-**Using direct function:**
-```typescript
-import { pButton } from 'primeng-cypress';
+### TypeScript / IDE integration (important)
 
-pButton('#submit-btn', { expectLabel: 'Submit' });
-pButton('.cancel-btn', { disabled: true, expectLabel: 'Cancel' });
+To get full TypeScript support and editor autocompletion for the custom commands (e.g. `cy.pButton` and `.pButton()`):
+
+- Make sure the consuming project picks up the library's `.d.ts` declarations (this project exposes them in
+  `lib/commands/cypress.d.ts`).
+- In many setups you can simply import `registerPrimeNGCommands()` in your `cypress/support/commands.ts` and ensure the
+  project's `tsconfig.json` includes the `cypress/` folder. Example `tsconfig.json` additions:
+
+```jsonc
+{
+  "include": [
+    "cypress/**/*.ts",
+    "node_modules/primeng-cypress/lib/**/*.d.ts"
+  ]
+}
 ```
 
-**Using cy.pButton() command:**
-```typescript
-cy.pButton('#submit-btn', { expectLabel: 'Submit', click: true });
-cy.pButton('.cancel-btn', { disabled: true });
+- If the editor does not show `cy.pButton`, try restarting the TypeScript server (in VS Code: Command Palette → "
+  TypeScript: Restart TS server").
+
+## Example usage in a test
+
+Parent command (by selector):
+
+```ts
+cy.pButton('#submit-btn', {expectLabel: 'Submit', click: true})
 ```
 
-**Using chainable .pButton() method:**
-```typescript
-cy.get('#submit-btn').pButton({ expectLabel: 'Submit', click: true });
-cy.get('.cancel-btn').pButton({ disabled: true, expectLabel: 'Cancel' });
+Chainable usage after `cy.get()`:
 
-// Chain with other Cypress commands
-cy.get('.container')
-  .find('button.primary')
-  .pButton({ expectLabel: 'Save', click: true });
+```ts
+cy.get('#submit-btn').pButton({expectLabel: 'Submit', click: true})
 ```
 
-**Complete test example:**
-```typescript
-it('should submit form with button click', () => {
-  cy.visit('/form-page');
-  
-  // Fill form
-  cy.get('#name').type('John Doe');
-  
-  // Test and click submit button using chainable syntax
-  cy.get('#submit-form').pButton({
-    disabled: false,
-    expectLabel: 'Submit Form',
-    click: true
-  });
-  
-  // Verify success
-  cy.get('.success-message').should('be.visible');
-});
-```
+## Contributing / Running local checks
 
-## Examples
-
-See the `examples/` directory for more usage examples.
-
-## Development
-
-### Build
+- Run TypeScript check:
 
 ```bash
-npm run build
+npx tsc --noEmit
 ```
 
-### Structure
+- Run Cypress example tests:
 
-- `src/` - TypeScript source files
-- `dist/` - Compiled JavaScript and type definitions
-- `examples/` - Example test files
+```bash
+npx cypress open
+```
+
+## Troubleshooting
+
+- "Property 'pButton' does not exist on type 'Chainable'":
+  - Ensure your `tsconfig.json` includes the `cypress/**` tests and the library declaration files.
+  - Restart the TypeScript server in your editor.
+  - Make sure you call `registerPrimeNGCommands()` from your `cypress/support/commands.ts` so the runtime commands are
+    registered before your specs run.
+
+- "Cannot find module './commands'" during Cypress startup:
+  - Verify that `lib/commands/commands.ts` exists (this repo includes the implementation).
+  - Ensure relative import paths are correct in `cypress/support/commands.ts`.
 
 ## License
 
-ISC
+MIT License

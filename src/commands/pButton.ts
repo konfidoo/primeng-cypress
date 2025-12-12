@@ -5,7 +5,7 @@ declare var cy: any;
 
 /**
  * Core logic for testing PrimeNG Button component (p-button)
- * 
+ *
  * @param element - Cypress chainable element to test
  * @param options - Configuration options for button testing
  * @returns Cypress chainable for further assertions
@@ -42,22 +42,22 @@ export function pButtonCore(
 
 /**
  * Test helper for PrimeNG Button component (p-button)
- * 
+ *
  * @param selector - CSS selector or Cypress chainable to locate the button
  * @param options - Configuration options for button testing
  * @returns Cypress chainable for further assertions
- * 
+ *
  * @example
  * ```typescript
  * // Test a button with label verification
  * pButton('#submit-btn', { expectLabel: 'Submit', click: true });
- * 
+ *
  * // Test a disabled button
  * pButton('.cancel-btn', { disabled: true, expectLabel: 'Cancel' });
- * 
+ *
  * // Use as Cypress command
  * cy.pButton('#submit-btn', { expectLabel: 'Submit', click: true });
- * 
+ *
  * // Use as chainable method
  * cy.get('#submit-btn').pButton({ expectLabel: 'Submit', click: true });
  * ```
@@ -67,8 +67,8 @@ export function pButton(
   options: NgButtonOptions = {}
 ): any {
   // Get the button element
-  const button = typeof selector === 'string' 
-    ? cy.get(selector) 
+  const button = typeof selector === 'string'
+    ? cy.get(selector)
     : selector;
 
   return pButtonCore(button, options);
