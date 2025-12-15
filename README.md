@@ -2,15 +2,25 @@
 
 [![Pull Request Tests](https://github.com/nblum/primeng-cypress/actions/workflows/ci.yml/badge.svg)](https://github.com/nblum/primeng-cypress/actions/workflows/ci.yml)
 
-A lightweight helper library that provides Cypress test helpers for PrimeNG components (example: `pButton`).
+A lightweight helper library that provides Cypress test helpers for PrimeNG components (examples: `pButton`, `pTabs`).
 
 This README explains how to run the included component tests locally and how to use this library from another project (
 locally during development or as an installed dependency).
 
 ## Contents
 
-- `lib/commands` - implementation and types for commands such as `pButton` and `registerPrimeNGCommands()`
+- `lib/commands` - implementation and types for commands such as `pButton`, `pTabs`, and `registerPrimeNGCommands()`
 - `cypress/` - example Cypress tests and support files that show how to register commands and mount Angular components
+
+## Supported components
+
+- `pButton` — see [`docs/pButton.md`](docs/pButton.md) for usage and examples.
+- `pTabs` — see [`docs/pTabs.md`](docs/pTabs.md) for usage and examples.
+
+## Not yet supported components
+
+- Any PrimeNG component beyond the helpers listed above (e.g., `pTabMenu`, `pAccordion` wrappers) is not currently
+  exposed by this library.
 
 ## Prerequisites
 
@@ -46,7 +56,8 @@ Run headless:
 npx cypress run
 ```
 
-The example spec `cypress/pButton.cy.ts` uses `cypress/angular`'s `mount` helper. The support file
+The example specs `cypress/pButton.cy.ts` and `cypress/pTabs.cy.ts` use `cypress/angular`'s `mount` helper. The support
+file
 `cypress/support/commands.ts` already registers the PrimeNG commands by calling `registerPrimeNGCommands()`.
 
 ## How to use this library in another project
@@ -70,12 +81,14 @@ import {registerPrimeNGCommands} from 'primeng-cypress'
 registerPrimeNGCommands()
 ```
 
-This will register the `cy.pButton(...)` parent command and the chainable `.pButton()` for element subjects.
+This will register the `cy.pButton(...)`, `cy.pTabs(...)` parent commands and their chainable versions for element
+subjects.
 
-If the package exports other helpers (for example `pButton` for direct usage), import them from the package root:
+If the package exports other helpers (for example `pButton`, `pTabs` for direct usage), import them from the package
+root:
 
 ```ts
-import {pButton} from 'primeng-cypress'
+import {pButton, pTabs} from 'primeng-cypress'
 ```
 
 ### 2) Use the library during local development (recommended when working on this repo)
@@ -148,7 +161,8 @@ steps for local development.
 To get full TypeScript support and editor autocompletion for the custom commands (e.g. `cy.pButton` and `.pButton()`):
 
 - This project exposes the declaration for the Cypress augmentations at `lib/commands/cypress.d.ts` and the package root
-  types file `lib/index.d.ts` references it. After linking/installing the consumer should have `node_modules/primeng-cypress/lib/commands/cypress.d.ts`.
+  types file `lib/index.d.ts` references it. After linking/installing the consumer should have
+  `node_modules/primeng-cypress/lib/commands/cypress.d.ts`.
 
 - If your editor/TS server does not pick up the augmentation automatically, add the following to the consumer's
   `tsconfig.json` `include` (copy/paste):
@@ -176,7 +190,8 @@ To get full TypeScript support and editor autocompletion for the custom commands
   }
   ```
 
-- After changing `tsconfig.json` or after linking, restart the TypeScript server in your editor (VS Code: Command Palette →
+- After changing `tsconfig.json` or after linking, restart the TypeScript server in your editor (VS Code: Command
+  Palette →
   "TypeScript: Restart TS server").
 
 ### Quick troubleshooting (local usage)
@@ -191,9 +206,12 @@ To get full TypeScript support and editor autocompletion for the custom commands
   - Ensure you ran `npm link` in the library and `npm link primeng-cypress` in the consumer.
   - Verify `ls -l node_modules/primeng-cypress` in the consumer shows a symlink to your local repo.
 
-- If you prefer not to use linking or your package manager behaves differently (pnpm): use `npm pack` or `file:` install.
+- If you prefer not to use linking or your package manager behaves differently (pnpm): use `npm pack` or `file:`
+  install.
 
 ## Example usage in a test
+
+### pButton
 
 Parent command (by selector):
 
@@ -206,6 +224,10 @@ Chainable usage after `cy.get()`:
 ```ts
 cy.get('#submit-btn').pButton({expectLabel: 'Submit', click: true})
 ```
+
+### pTabs
+
+See the dedicated [`pTabs` guide](docs/pTabs.md) for detailed usage and the example test formerly shown here.
 
 ## Contributing / Running local checks
 
