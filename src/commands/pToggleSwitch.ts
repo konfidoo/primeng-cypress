@@ -7,7 +7,7 @@ import Chainable = Cypress.Chainable;
 declare var cy: any;
 
 /**
- * Core logic for testing PrimeNG ToggleSwitch component (p-togglebutton / p-toggleswitch)
+ * Core logic for testing PrimeNG ToggleSwitch component (p-toggleswitch)
  *
  * This is a minimal skeleton that verifies the host element and provides basic
  * checks for checked/disabled state and an optional click action.
@@ -28,13 +28,11 @@ export function pToggleSwitchCore(
     ensureClasses(cy.get('@pToggleSwitch'), options.expectClasses);
   }
 
-
-  if (options.expectChecked === true) {
+  if (options.isChecked === true) {
     cy.get('@pToggleSwitch').should('have.class', 'p-toggleswitch-checked');
-  } else if (options.expectChecked === false) {
+  } else if (options.isChecked === false) {
     cy.get('@pToggleSwitch').should('not.have.class', 'p-toggleswitch-checked');
   }
-
 
   if (options.click === true) {
     cy.get('@pToggleSwitch').then(($el: any) => {

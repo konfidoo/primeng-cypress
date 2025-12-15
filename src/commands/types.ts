@@ -49,9 +49,9 @@ export interface PTabsOptions extends GeneralElementOptions {
  */
 export interface PToggleSwitchOptions extends GeneralElementOptions {
   /**
-   * Expected checked state of the toggle switch
+   * Expected initial checked state of the toggle switch
    */
-  expectChecked?: boolean;
+  isChecked?: boolean;
 
   /**
    * Whether the toggle is disabled
@@ -59,7 +59,9 @@ export interface PToggleSwitchOptions extends GeneralElementOptions {
   disabled?: boolean;
 
   /**
-   * Whether to perform a click on the toggle
+   * Whether to perform a click on the toggle to change its state
+   * combine with isChecked to ensure the state changes appropriately
+   * example if isChecked is true and click is true, after the click the toggle should be unchecked
    */
   click?: boolean;
 }

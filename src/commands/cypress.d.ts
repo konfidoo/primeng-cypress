@@ -53,7 +53,7 @@ declare global {
       /**
        * Test helper for PrimeNG ToggleSwitch component
        *
-       * Supports parent and chainable forms. Defaults to selecting the first `p-togglebutton`.
+       * Supports parent and chainable forms. Defaults to selecting the first `p-toggleswitch`.
        *
        * @example
        * ```typescript

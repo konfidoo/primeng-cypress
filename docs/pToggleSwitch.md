@@ -1,6 +1,6 @@
 # pToggleSwitch
 
-A helper for testing PrimeNG `p-toggleswitch` / `p-togglebutton` components in Cypress component tests.
+A helper for testing PrimeNG `p-toggleswitch` components in Cypress component tests.
 
 This helper supports both parent and chainable forms and attempts to detect common PrimeNG render patterns
 (`input[type="checkbox"]`, a clickable `button` with `aria-pressed`, or a host class like `p-toggleswitch-checked`).

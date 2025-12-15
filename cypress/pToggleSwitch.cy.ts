@@ -35,7 +35,7 @@ describe('pToggleSwitch.cy.ts', () => {
 
     ;(cy as any).mount(TestHostComponent, {imports: [ToggleSwitchModule, FormsModule]})
 
-    cy.get('#checkedToggle').pToggleSwitch({expectChecked: true})
+    cy.get('#checkedToggle').pToggleSwitch({isChecked: true})
   })
 
   it('validates disabled state (disabled option)', () => {
@@ -70,7 +70,7 @@ describe('pToggleSwitch.cy.ts', () => {
     // Click the toggle and assert checked state and host classes in one call
     cy.get('#combined').pToggleSwitch({
       click: true,
-      expectChecked: false,
+      isChecked: false,
       disabled: false,
       expectClasses: ['special', 'large']
     })

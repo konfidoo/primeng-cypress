@@ -76,7 +76,7 @@ export function registerPrimeNGCommands(): void {
         ? cy.wrap(subject)
         : selector
           ? cy.get(selector)
-          : cy.get('p-togglebutton');
+          : cy.get('p-toggleswitch');
 
       return pToggleSwitchCore(toggleChainable, resolvedOptions);
     }
