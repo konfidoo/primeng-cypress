@@ -68,7 +68,7 @@ export function pToggleSwitch(
 ): any {
   const el = typeof selector === 'string'
     ? cy.get(selector)
-    : selector ?? cy.get('p-togglebutton');
+    : selector ?? cy.get('p-toggleswitch');
 
   return pToggleSwitchCore(el, options);
 }
