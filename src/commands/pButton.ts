@@ -1,7 +1,10 @@
-import { NgButtonOptions } from './types';
+/// <reference types="cypress" />
+import {NgButtonOptions} from './types';
+import {ensureClasses} from './util';
+import Chainable = Cypress.Chainable;
 
-// Declare global cy for runtime access
-declare var cy: any;
+// Declare global cy for runtime access (typed via Cypress types)
+// (no `any` — the global `cy` is provided by the Cypress type declarations)
 
 /**
  * Core logic for testing PrimeNG Button component (p-button)
@@ -11,19 +14,23 @@ declare var cy: any;
  * @returns Cypress chainable for further assertions
  */
 export function pButtonCore(
-  element: any,
+  element: Chainable<any>,
   options: NgButtonOptions = {}
 ): any {
-  // Verify the element exists
   element.should('exist');
+  element.should('have.prop', 'nodeName', 'P-BUTTON');
 
   // Check if button is disabled
   if (options.disabled !== undefined) {
     if (options.disabled) {
-      element.should('be.disabled');
+      element.find('button').should('be.disabled');
     } else {
-      element.should('not.be.disabled');
+      element.find('button').should('not.be.disabled');
     }
+  }
+
+  if (options.expectClasses !== undefined) {
+    ensureClasses(element, options.expectClasses);
   }
 
   // Check expected label
@@ -63,7 +70,7 @@ export function pButtonCore(
  * ```
  */
 export function pButton(
-  selector: string | any,
+  selector: string | Chainable<any>,
   options: NgButtonOptions = {}
 ): any {
   // Get the button element

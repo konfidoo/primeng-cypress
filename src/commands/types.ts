@@ -1,7 +1,12 @@
+export interface GeneralElementOptions {
+  expectClasses?: string[];
+}
+
+
 /**
  * Options for testing PrimeNG button component
  */
-export interface NgButtonOptions {
+export interface NgButtonOptions extends GeneralElementOptions {
   /**
    * Whether the button is disabled
    */
