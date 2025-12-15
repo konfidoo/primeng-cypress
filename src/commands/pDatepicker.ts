@@ -6,6 +6,44 @@ declare var cy: any;
 /**
  * Core logic for testing PrimeNG DatePicker component (p-datepicker)
  *
+ * This function provides comprehensive testing capabilities for the PrimeNG DatePicker component,
+ * including validation, interaction, and date selection.
+ *
+ * ## Coverage Areas:
+ *
+ * ### 1. Visibility and Element Validation
+ * - Scrolls the datepicker into view with a configurable offset
+ * - Validates that the element is indeed a P-DATEPICKER component
+ * - Ensures the element is visible on the page
+ *
+ * ### 2. Current Value Validation (`currentValue`)
+ * - Checks if the datepicker's input field contains the expected value
+ * - Can be skipped with `noInputValidation: true`
+ *
+ * ### 3. Input Value Setting (`inputValue`)
+ * - Clears the current input value
+ * - Types a new value into the datepicker input field
+ * - Validates the input was set correctly (unless `noInputValidation` is true)
+ *
+ * ### 4. Inline/AutoOpen Logic
+ * - `inline: true` - For datepickers that are always visible (no popup)
+ *   - The calendar panel should already be visible in the DOM
+ * - `autoOpen: true` - For popup datepickers
+ *   - Automatically clicks the input to open the calendar panel
+ *   - Waits for the panel to become visible before proceeding
+ * - Default (`autoOpen: false`) - Does not automatically open the panel
+ *
+ * ### 5. Date Picking (`pick` object)
+ * - Allows selecting a specific date from the calendar
+ * - `pick.day` - Day of the month to select (1-31)
+ * - `pick.month` - Month to navigate to (1-12)
+ * - Automatically opens the panel if `autoOpen` is not false and `inline` is not true
+ *
+ * ### 6. Expected Value Validation (`expectedValue`)
+ * - After all operations, validates that the input contains the expected value
+ * - Useful for verifying that date picking operations completed successfully
+ * - Can be skipped with `noInputValidation: true`
+ *
  * @param element - Cypress chainable element to test
  * @param options - Configuration options for datepicker testing
  * @returns Cypress chainable for further assertions

@@ -195,6 +195,8 @@ To get full TypeScript support and editor autocompletion for the custom commands
 
 ## Example usage in a test
 
+### pButton
+
 Parent command (by selector):
 
 ```ts
@@ -205,6 +207,38 @@ Chainable usage after `cy.get()`:
 
 ```ts
 cy.get('#submit-btn').pButton({expectLabel: 'Submit', click: true})
+```
+
+### pDatepicker
+
+Parent command (by selector):
+
+```ts
+// Validate current value
+cy.pDatepicker('#date-field', { currentValue: '01/15/2024' })
+
+// Pick a specific date
+cy.pDatepicker('#date-field', { 
+  autoOpen: true,
+  pick: { day: 20, month: 3 },
+  expectedValue: '03/20/2024'
+})
+
+// Set input value directly
+cy.pDatepicker('#date-field', { inputValue: '12/25/2024' })
+
+// Work with inline datepicker
+cy.pDatepicker('#inline-date', { inline: true, pick: { day: 15, month: 6 } })
+```
+
+Chainable usage after `cy.get()`:
+
+```ts
+cy.get('#date-field').pDatepicker({ 
+  currentValue: '01/15/2024',
+  autoOpen: true,
+  pick: { day: 20, month: 3 }
+})
 ```
 
 ## Contributing / Running local checks
