@@ -4,6 +4,9 @@
  * Provides Cypress test functions for PrimeNG components
  */
 
+/// <reference path="./cypress.d.ts" />
+
 export { pButton } from './pButton';
-export type { NgButtonOptions } from './types';
+export { pTabs } from './pTabs';
+export type { NgButtonOptions, PTabsOptions } from './types';
 export { registerPrimeNGCommands } from './commands';

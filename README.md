@@ -2,14 +2,14 @@
 
 [![Pull Request Tests](https://github.com/nblum/primeng-cypress/actions/workflows/ci.yml/badge.svg)](https://github.com/nblum/primeng-cypress/actions/workflows/ci.yml)
 
-A lightweight helper library that provides Cypress test helpers for PrimeNG components (example: `pButton`).
+A lightweight helper library that provides Cypress test helpers for PrimeNG components (examples: `pButton`, `pTabs`).
 
 This README explains how to run the included component tests locally and how to use this library from another project (
 locally during development or as an installed dependency).
 
 ## Contents
 
-- `lib/commands` - implementation and types for commands such as `pButton` and `registerPrimeNGCommands()`
+- `lib/commands` - implementation and types for commands such as `pButton`, `pTabs`, and `registerPrimeNGCommands()`
 - `cypress/` - example Cypress tests and support files that show how to register commands and mount Angular components
 
 ## Prerequisites
@@ -46,7 +46,7 @@ Run headless:
 npx cypress run
 ```
 
-The example spec `cypress/pButton.cy.ts` uses `cypress/angular`'s `mount` helper. The support file
+The example specs `cypress/pButton.cy.ts` and `cypress/pTabs.cy.ts` use `cypress/angular`'s `mount` helper. The support file
 `cypress/support/commands.ts` already registers the PrimeNG commands by calling `registerPrimeNGCommands()`.
 
 ## How to use this library in another project
@@ -70,12 +70,12 @@ import {registerPrimeNGCommands} from 'primeng-cypress'
 registerPrimeNGCommands()
 ```
 
-This will register the `cy.pButton(...)` parent command and the chainable `.pButton()` for element subjects.
+This will register the `cy.pButton(...)`, `cy.pTabs(...)` parent commands and their chainable versions for element subjects.
 
-If the package exports other helpers (for example `pButton` for direct usage), import them from the package root:
+If the package exports other helpers (for example `pButton`, `pTabs` for direct usage), import them from the package root:
 
 ```ts
-import {pButton} from 'primeng-cypress'
+import {pButton, pTabs} from 'primeng-cypress'
 ```
 
 ### 2) Use the library during local development (recommended when working on this repo)
@@ -195,6 +195,8 @@ To get full TypeScript support and editor autocompletion for the custom commands
 
 ## Example usage in a test
 
+### pButton
+
 Parent command (by selector):
 
 ```ts
@@ -205,6 +207,64 @@ Chainable usage after `cy.get()`:
 
 ```ts
 cy.get('#submit-btn').pButton({expectLabel: 'Submit', click: true})
+```
+
+### pTabs
+
+The `pTabs` command helps test PrimeNG Tabs components (`p-tabs`). It can select a tab by its label and validates that the `p-tab-active` class is applied.
+
+Parent command (by selector):
+
+```ts
+cy.pTabs('p-tabs', {select: 'Tab 2'})
+```
+
+Chainable usage after `cy.get()`:
+
+```ts
+cy.get('p-tabs').pTabs({select: 'Tab 2'})
+```
+
+**How it works:**
+
+1. Verifies that the element is a `P-TABS` component
+2. If `select` option is provided:
+   - Finds the tab containing the specified label text
+   - Clicks on the tab (using `.closest('.p-tab')` to find the tab element)
+   - Validates that the tab has the `p-tab-active` class after selection
+
+**Example test:**
+
+```typescript
+import { Component } from '@angular/core';
+import { Tabs } from 'primeng/tabs';
+
+it('selects a tab by label', () => {
+  @Component({
+    imports: [Tabs],
+    template: `
+      <p-tabs [(value)]="activeTab">
+        <p-tabpanel header="Tab 1">
+          <p>Content for Tab 1</p>
+        </p-tabpanel>
+        <p-tabpanel header="Tab 2">
+          <p>Content for Tab 2</p>
+        </p-tabpanel>
+      </p-tabs>
+    `
+  })
+  class TestHostComponent {
+    activeTab: number = 0;
+  }
+
+  cy.mount(TestHostComponent, { imports: [Tabs] });
+  
+  // Select Tab 2 and validate it's active
+  cy.get('p-tabs').pTabs({ select: 'Tab 2' });
+  
+  // Verify Tab 2 content is visible
+  cy.contains('Content for Tab 2').should('be.visible');
+});
 ```
 
 ## Contributing / Running local checks

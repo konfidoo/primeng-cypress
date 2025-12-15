@@ -1,8 +1,9 @@
 // filepath: /home/nico-blum/projects/primeng-cypress/lib/commands/commands.ts
 // Register Cypress commands for PrimeNG components
 
-import { NgButtonOptions } from './types';
+import { NgButtonOptions, PTabsOptions } from './types';
 import { pButtonCore } from './pButton';
+import { pTabsCore } from './pTabs';
 
 // Declare global Cypress and cy for runtime access
 declare var Cypress: any;
@@ -34,6 +35,17 @@ export function registerPrimeNGCommands(): void {
   Cypress.Commands.add('pButton', { prevSubject: 'element' }, (subject: any, options?: NgButtonOptions) => {
     // Subject is already a jQuery element from previous command, wrap it to get Cypress chainable
     return pButtonCore(cy.wrap(subject), options);
+  });
+
+  // Add cy.pTabs() command (parent command without prevSubject)
+  Cypress.Commands.add('pTabs', (selector: string, options?: PTabsOptions) => {
+    return pTabsCore(cy.get(selector), options);
+  });
+
+  // Add chainable .pTabs() method (child command with prevSubject: 'element')
+  Cypress.Commands.add('pTabs', { prevSubject: 'element' }, (subject: any, options?: PTabsOptions) => {
+    // Subject is already a jQuery element from previous command, wrap it to get Cypress chainable
+    return pTabsCore(cy.wrap(subject), options);
   });
 }
 
