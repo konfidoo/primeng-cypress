@@ -1,4 +1,4 @@
-import { PTabsOptions } from './types';
+import {PTabsOptions} from './types';
 
 // Declare global cy for runtime access
 declare var cy: any;
@@ -16,6 +16,17 @@ export function pTabsCore(
 ): any {
   // Verify the element is a P-TABS element
   element.should('match', 'p-tabs');
+
+  // Check expected number of tabs
+  if (typeof options.expectedTabCount === 'number') {
+    element.find('.p-tab').should('have.length', options.expectedTabCount);
+  }
+
+  // Check the active tab label matches expected value
+  if (options.activeTab) {
+    const activeTab = element.find('.p-tab-active');
+    activeTab.should('exist').and('contain.text', options.activeTab);
+  }
 
   // Select a tab by label if requested
   if (options.select) {

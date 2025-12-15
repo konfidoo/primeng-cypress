@@ -27,8 +27,19 @@ export interface NgButtonOptions extends GeneralElementOptions {
  * Options for testing PrimeNG tabs component
  */
 export interface PTabsOptions {
+
+  /**
+   * Label of the currently active tab to validate
+   */
+  activeTab?: string;
+
   /**
    * Label of the tab to select and validate
    */
   select?: string;
+
+  /**
+   * Expected number of tabs
+   */
+  expectedTabCount?: number;
 }
