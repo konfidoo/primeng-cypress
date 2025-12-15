@@ -12,7 +12,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "npx cypress run --component --headless --spec \"cypress/**/*.cy.ts\"",
-    "build:lib": "tsc -p tsconfig.lib.json",
+    "build:lib": "tsc -p tsconfig.lib.json && cp src/commands/cypress.d.ts lib/cypress.d.ts",
     "prepare": "npm run build:lib"
   },
   "prettier": {
