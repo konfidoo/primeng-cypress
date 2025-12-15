@@ -1,4 +1,5 @@
 import {PTabsOptions} from './types';
+import Chainable = Cypress.Chainable;
 
 // Declare global cy for runtime access
 declare var cy: any;
@@ -11,29 +12,35 @@ declare var cy: any;
  * @returns Cypress chainable for further assertions
  */
 export function pTabsCore(
-  element: any,
+  element: Chainable<any>,
   options: PTabsOptions = {}
-): any {
+): Chainable<any> {
+  // give the element an alias for easier reference
+  element.as('pTabs');
+
   // Verify the element is a P-TABS element
-  element.should('match', 'p-tabs');
+  cy.get('@pTabs').should('match', 'p-tabs');
+  cy.get('@pTabs').find('p-tabpanels').should('exist');
 
   // Check expected number of tabs
   if (typeof options.expectedTabCount === 'number') {
-    element.find('.p-tab').should('have.length', options.expectedTabCount);
+    cy.get('@pTabs').find('.p-tab').should('have.length', options.expectedTabCount);
   }
 
   // Check the active tab label matches expected value
   if (options.activeTab) {
-    const activeTab = element.find('.p-tab-active');
-    activeTab.should('exist').and('contain.text', options.activeTab);
+    const activeTab = cy.get('@pTabs').find('[aria-selected="true"]');
+    // const activeTab = element.find();
+    activeTab.should('contain', options.activeTab);
   }
 
   // Select a tab by label if requested
   if (options.select) {
     // Find the tab containing the specified label text and click it
     // Note: Assumes PrimeNG tabs structure where label is inside .p-tab element
-    const tab = element.contains(options.select).closest('.p-tab');
-    tab.should('be.visible').click();
+    const tab = cy.get('@pTabs').contains(options.select).closest('.p-tab');
+    tab.should('be.visible')
+    tab.click();
     // Verify the tab has the active class
     tab.should('have.class', 'p-tab-active');
   }

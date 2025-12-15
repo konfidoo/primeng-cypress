@@ -1,9 +1,9 @@
 // filepath: /home/nico-blum/projects/primeng-cypress/lib/commands/commands.ts
 // Register Cypress commands for PrimeNG components
 
-import { NgButtonOptions, PTabsOptions } from './types';
-import { pButtonCore } from './pButton';
-import { pTabsCore } from './pTabs';
+import {NgButtonOptions, PTabsOptions} from './types';
+import {pButtonCore} from './pButton';
+import {pTabsCore} from './pTabs';
 
 // Declare global Cypress and cy for runtime access
 declare var Cypress: any;
@@ -32,20 +32,27 @@ export function registerPrimeNGCommands(): void {
   });
 
   // Add chainable .pButton() method (child command with prevSubject: 'element')
-  Cypress.Commands.add('pButton', { prevSubject: 'element' }, (subject: any, options?: NgButtonOptions) => {
+  Cypress.Commands.add('pButton', {prevSubject: 'element'}, (subject: any, options?: NgButtonOptions) => {
     // Subject is already a jQuery element from previous command, wrap it to get Cypress chainable
     return pButtonCore(cy.wrap(subject), options);
   });
 
-  // Add cy.pTabs() command (parent command without prevSubject)
-  Cypress.Commands.add('pTabs', (selector: string, options?: PTabsOptions) => {
-    return pTabsCore(cy.get(selector), options);
-  });
+  // Add cy.pTabs() command (supports optional prevSubject to act as parent or child)
+  Cypress.Commands.add(
+    'pTabs',
+    {prevSubject: 'optional'},
+    (subject: any, selectorOrOptions?: string | PTabsOptions, options?: PTabsOptions) => {
+      // Determine if the parent call passed a selector string
+      const selector = typeof selectorOrOptions === 'string' ? selectorOrOptions : undefined;
+      const resolvedOptions = typeof selectorOrOptions === 'string' ? options : selectorOrOptions;
 
-  // Add chainable .pTabs() method (child command with prevSubject: 'element')
-  Cypress.Commands.add('pTabs', { prevSubject: 'element' }, (subject: any, options?: PTabsOptions) => {
-    // Subject is already a jQuery element from previous command, wrap it to get Cypress chainable
-    return pTabsCore(cy.wrap(subject), options);
-  });
+      const tabsChainable = subject
+        ? cy.wrap(subject)
+        : selector
+          ? cy.get(selector)
+          : cy.get('p-tabs');
+
+      return pTabsCore(tabsChainable, resolvedOptions);
+    }
+  );
 }
-

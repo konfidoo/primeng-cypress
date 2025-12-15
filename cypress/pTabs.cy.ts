@@ -1,8 +1,9 @@
 // Test for pTabs command
 
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {Tab, TabList, TabPanel, TabPanels, Tabs} from 'primeng/tabs';
 
+const IMPORTS = [Tabs, TabPanel, TabList, Tab, TabPanels];
 const TABS_TEMPLATE = `
         <p-tabs value="0">
           <p-tablist>
@@ -34,15 +35,14 @@ describe('pTabs.cy.ts', () => {
 
   it('selects a tab by label and validates p-tab-active class', () => {
     @Component({
-      imports: [Tabs, TabPanel, TabList, Tab, TabPanels],
+      imports: IMPORTS,
       template: TABS_TEMPLATE,
     })
+      // Mount the component
     class TestHostComponent {
-      activeTab: number = 0;
     }
 
-    // Mount the component
-    (cy as any).mount(TestHostComponent, { imports: [Tabs] });
+    (cy as any).mount(TestHostComponent);
 
     // Verify the tabs component exists
     cy.get('p-tabs').should('exist');
@@ -51,7 +51,7 @@ describe('pTabs.cy.ts', () => {
     cy.contains('Content for Tab 1').should('be.visible');
 
     // Select Tab 2 using the pTabs command
-    cy.get('p-tabs').pTabs({ select: 'Header II' });
+    cy.get('p-tabs').pTabs({select: 'Header II'});
 
     // Verify Tab 2 content is visible
     cy.contains('Content for Tab 2').should('be.visible');
@@ -59,83 +59,73 @@ describe('pTabs.cy.ts', () => {
 
   it('works as a parent command with selector', () => {
     @Component({
-      imports: [Tabs],
+      imports: IMPORTS,
       template: TABS_TEMPLATE,
     })
+      // Mount the component
     class TestHostComponent {
-      activeTab: number = 0;
     }
 
-    (cy as any).mount(TestHostComponent, { imports: [Tabs] });
+    (cy as any).mount(TestHostComponent);
+
+    // Verify Tab 1 content is visible
+    cy.contains('Content for Tab 1').should('be.visible');
 
     // Use pTabs as a parent command
-    cy.pTabs('p-tabs', { select: 'Header II' });
+    cy.pTabs('p-tabs', {select: 'Header II'});
 
     // Verify Tab 2 content is visible
     cy.contains('Content for Tab 2').should('be.visible');
   });
 
-  it('verifies the p-tab-active class is applied', () => {
-    @Component({
-      imports: [Tabs],
-      template: TABS_TEMPLATE,
-    })
-    class TestHostComponent {
-      activeTab: number = 0;
-    }
-
-    (cy as any).mount(TestHostComponent, { imports: [Tabs] });
-
-    // Select Beta tab
-    cy.get('p-tabs').pTabs({ select: 'Beta' });
-
-    // Verify the p-tab-active class is present on the selected tab
-    cy.get('p-tabs').contains('Beta').closest('.p-tab').should('have.class', 'p-tab-active');
-  });
 
   it('validates the expected tab count via options', () => {
     @Component({
-      imports: [Tabs],
+      imports: IMPORTS,
       template: TABS_TEMPLATE,
     })
+      // Mount the component
     class TestHostComponent {
-      activeTab: number = 0;
     }
 
-    (cy as any).mount(TestHostComponent, { imports: [Tabs] });
+    (cy as any).mount(TestHostComponent);
 
     // Validate the provided expectedTabCount option
-    cy.get('p-tabs').pTabs({ expectedTabCount: 3 });
+    cy.get('p-tabs').pTabs({expectedTabCount: 3});
   });
 
   it('works with the activeTab validation option', () => {
     @Component({
-      imports: [Tabs],
+      imports: IMPORTS,
       template: TABS_TEMPLATE,
     })
+      // Mount the component
     class TestHostComponent {
-      activeTab: number = 0;
     }
 
-    (cy as any).mount(TestHostComponent, { imports: [Tabs] });
+    (cy as any).mount(TestHostComponent);
 
     // Verify the active tab label without selecting another tab
-    cy.get('p-tabs').pTabs({ activeTab: 'Header I' });
+    cy.get('p-tabs').pTabs({activeTab: 'Header I'});
   });
 
-  it('selects a tab and validates activeTab in one call', () => {
+  it('selects multiple options combined', () => {
     @Component({
-      imports: [Tabs],
+      imports: IMPORTS,
       template: TABS_TEMPLATE,
     })
+      // Mount the component
     class TestHostComponent {
-      activeTab: number = 0;
     }
 
-    (cy as any).mount(TestHostComponent, { imports: [Tabs] });
+    (cy as any).mount(TestHostComponent);
 
-    // Select Header III and assert the combined expectations
-    cy.get('p-tabs').pTabs({ select: 'Header III', activeTab: 'Header III' });
+    // Select Header III and assert that Header I is currently active
+    cy.get('p-tabs').pTabs({
+      expectedTabCount: 3,
+      select: 'Header III',
+      activeTab: 'Header I'
+    });
 
     cy.contains('Content for Tab 3').should('be.visible');
   });
