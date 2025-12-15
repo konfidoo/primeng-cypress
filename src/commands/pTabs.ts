@@ -15,14 +15,15 @@ export function pTabsCore(
   options: PTabsOptions = {}
 ): any {
   // Verify the element is a P-TABS element
-  element.should('have.prop', 'nodeName', 'P-TABS');
+  element.should('match', 'p-tabs');
 
   // Select a tab by label if requested
   if (options.select) {
-    // Find the tab containing the specified label text
-    element.contains(options.select).closest('.p-tab').should('be.visible').click();
+    // Find the tab containing the specified label text and click it
+    const tab = element.contains(options.select).closest('.p-tab');
+    tab.should('be.visible').click();
     // Verify the tab has the active class
-    element.contains(options.select).closest('.p-tab').should('have.class', 'p-tab-active');
+    tab.should('have.class', 'p-tab-active');
   }
 
   return element;
