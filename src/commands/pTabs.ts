@@ -20,6 +20,7 @@ export function pTabsCore(
   // Select a tab by label if requested
   if (options.select) {
     // Find the tab containing the specified label text and click it
+    // Note: Assumes PrimeNG tabs structure where label is inside .p-tab element
     const tab = element.contains(options.select).closest('.p-tab');
     tab.should('be.visible').click();
     // Verify the tab has the active class
