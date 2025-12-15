@@ -1,5 +1,6 @@
-import { NgButtonOptions } from './types';
+import { NgButtonOptions, PDatePickerOptions } from './types';
 import { pButtonCore } from './pButton';
+import { pDatepickerCore } from './pDatepicker';
 
 // Declare global Cypress and cy for runtime access
 declare var Cypress: any;
@@ -32,5 +33,16 @@ export function registerPrimeNGCommands(): void {
   Cypress.Commands.add('pButton', { prevSubject: 'element' }, (subject: any, options?: NgButtonOptions) => {
     // Subject is already a jQuery element from previous command, wrap it to get Cypress chainable
     return pButtonCore(cy.wrap(subject), options);
+  });
+
+  // Add cy.pDatepicker() command (parent command without prevSubject)
+  Cypress.Commands.add('pDatepicker', (selector: string, options?: PDatePickerOptions) => {
+    return pDatepickerCore(cy.get(selector), options);
+  });
+
+  // Add chainable .pDatepicker() method (child command with prevSubject: 'element')
+  Cypress.Commands.add('pDatepicker', { prevSubject: 'element' }, (subject: any, options?: PDatePickerOptions) => {
+    // Subject is already a jQuery element from previous command, wrap it to get Cypress chainable
+    return pDatepickerCore(cy.wrap(subject), options);
   });
 }

@@ -5,5 +5,9 @@
  */
 
 export { pButton } from './pButton';
-export type { NgButtonOptions } from './types';
+export { pDatepicker } from './pDatepicker';
+export type { NgButtonOptions, PDatePickerOptions } from './types';
 export { registerPrimeNGCommands } from './commands';
+
+// Export Cypress type augmentations
+export {} from './cypress.d';

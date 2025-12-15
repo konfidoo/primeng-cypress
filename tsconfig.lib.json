@@ -2,6 +2,7 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./lib",
+    "rootDir": "./src/commands",
     "declaration": true,
     "declarationMap": true,
     "emitDeclarationOnly": false,
@@ -10,7 +11,7 @@
     "isolatedModules": false
   },
   "include": [
-    "src/**/*.ts"
+    "src/commands/**/*.ts"
   ],
   "exclude": [
     "src/**/*.spec.ts",
@@ -18,4 +19,3 @@
     "node_modules"
   ]
 }
-
