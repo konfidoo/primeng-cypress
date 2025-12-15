@@ -2,7 +2,8 @@
 
 [![Pull Request Tests](https://github.com/nblum/primeng-cypress/actions/workflows/ci.yml/badge.svg)](https://github.com/nblum/primeng-cypress/actions/workflows/ci.yml)
 
-A lightweight helper library that provides Cypress test helpers for PrimeNG components (examples: `pButton`, `pTabs`).
+A lightweight helper library that provides Cypress test helpers for PrimeNG components (examples: `pButton`, `pTabs`,
+`pToggleSwitch`).
 
 This README explains how to run the included component tests locally and how to use this library from another project (
 locally during development or as an installed dependency).
@@ -16,6 +17,7 @@ locally during development or as an installed dependency).
 
 - `pButton` — see [`docs/pButton.md`](docs/pButton.md) for usage and examples.
 - `pTabs` — see [`docs/pTabs.md`](docs/pTabs.md) for usage and examples.
+- `pToggleSwitch` — see [`docs/pToggleSwitch.md`](docs/pToggleSwitch.md) for usage and examples.
 
 ## Not yet supported components
 
@@ -50,11 +52,12 @@ registerPrimeNGCommands()
 
 This will register the commands globally so you can use them in your tests.
 
-If the package exports other helpers (for example `pButton`, `pTabs` for direct usage), import them from the package
+If the package exports other helpers (for example `pButton`, `pTabs`, `pToggleSwitch` for direct usage), import them
+from the package
 root:
 
 ```ts
-import {pButton, pTabs} from 'primeng-cypress'
+import {pButton, pTabs, pToggleSwitch} from 'primeng-cypress'
 ```
 
 ### TypeScript / IDE integration (important)

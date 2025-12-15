@@ -43,3 +43,25 @@ export interface PTabsOptions extends GeneralElementOptions {
    */
   expectedTabCount?: number;
 }
+
+/**
+ * Options for testing PrimeNG ToggleSwitch component
+ */
+export interface PToggleSwitchOptions extends GeneralElementOptions {
+  /**
+   * Expected initial checked state of the toggle switch
+   */
+  isChecked?: boolean;
+
+  /**
+   * Whether the toggle is disabled
+   */
+  disabled?: boolean;
+
+  /**
+   * Whether to perform a click on the toggle to change its state
+   * combine with isChecked to ensure the state changes appropriately
+   * example if isChecked is true and click is true, after the click the toggle should be unchecked
+   */
+  click?: boolean;
+}

@@ -1,4 +1,4 @@
-import {PButtonOptions, PTabsOptions} from './types';
+import {PButtonOptions, PTabsOptions, PToggleSwitchOptions} from './types';
 
 declare global {
   namespace Cypress {
@@ -49,6 +49,21 @@ declare global {
        * ```
        */
       pTabs(options?: PTabsOptions): Chainable<JQuery<HTMLElement>>;
+
+      /**
+       * Test helper for PrimeNG ToggleSwitch component
+       *
+       * Supports parent and chainable forms. Defaults to selecting the first `p-toggleswitch`.
+       *
+       * @example
+       * ```typescript
+       * cy.pToggleSwitch('#my-toggle', { expectChecked: true, click: true });
+       * cy.get('#my-toggle').pToggleSwitch({ expectChecked: false });
+       * ```
+       */
+      pToggleSwitch(selector: string, options?: PToggleSwitchOptions): Chainable<JQuery<HTMLElement>>;
+
+      pToggleSwitch(options?: PToggleSwitchOptions): Chainable<JQuery<HTMLElement>>;
     }
   }
 }
