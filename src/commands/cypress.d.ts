@@ -1,4 +1,4 @@
-import { NgButtonOptions, PTabsOptions } from './types';
+import {PButtonOptions, PTabsOptions} from './types';
 
 declare global {
   namespace Cypress {
@@ -6,33 +6,20 @@ declare global {
       /**
        * Test helper for PrimeNG Button component (p-button)
        *
-       * @param selector - CSS selector to locate the button
-       * @param options - Configuration options for button testing
-       * @returns Cypress chainable for further assertions
+       * Accepts an optional selector and defaults to the first `<p-button>` on the page.
+       * Supports both parent (`cy.pButton(...)`) and chainable (`cy.get(...).pButton(...)`) forms
+       * thanks to the shared optional prevSubject registration in `registerPrimeNGCommands()`.
        *
        * @example
        * ```typescript
        * cy.pButton('#submit-btn', { expectLabel: 'Submit', click: true });
-       * cy.pButton('.cancel-btn', { disabled: true });
+       * cy.pButton({ expectClasses: ['primary'], expectLabel: 'Primary' });
+       * cy.get('p-button').pButton({ click: true });
        * ```
        */
-      pButton(selector: string, options?: NgButtonOptions): Chainable<JQuery<HTMLElement>>;
+      pButton(selector: string, options?: PButtonOptions): Chainable<JQuery<HTMLElement>>;
 
-      /**
-       * Test helper for PrimeNG Button component (p-button) - chainable version
-       *
-       * Use this after getting an element with cy.get()
-       *
-       * @param options - Configuration options for button testing
-       * @returns Cypress chainable for further assertions
-       *
-       * @example
-       * ```typescript
-       * cy.get('#submit-btn').pButton({ expectLabel: 'Submit', click: true });
-       * cy.get('.cancel-btn').pButton({ disabled: true });
-       * ```
-       */
-      pButton(options?: NgButtonOptions): Chainable<JQuery<HTMLElement>>;
+      pButton(options?: PButtonOptions): Chainable<JQuery<HTMLElement>>;
 
       /**
        * Test helper for PrimeNG Tabs component (p-tabs)

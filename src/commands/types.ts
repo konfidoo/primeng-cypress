@@ -6,7 +6,7 @@ export interface GeneralElementOptions {
 /**
  * Options for testing PrimeNG button component
  */
-export interface NgButtonOptions extends GeneralElementOptions {
+export interface PButtonOptions extends GeneralElementOptions {
   /**
    * Whether the button is disabled
    */

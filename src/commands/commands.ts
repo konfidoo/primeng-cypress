@@ -1,7 +1,7 @@
 // filepath: /home/nico-blum/projects/primeng-cypress/lib/commands/commands.ts
 // Register Cypress commands for PrimeNG components
 
-import {NgButtonOptions, PTabsOptions} from './types';
+import {PButtonOptions, PTabsOptions} from './types';
 import {pButtonCore} from './pButton';
 import {pTabsCore} from './pTabs';
 
@@ -26,16 +26,23 @@ export function registerPrimeNGCommands(): void {
     throw new Error('Cypress is not available. Make sure to call this function in a Cypress environment.');
   }
 
-  // Add cy.pButton() command (parent command without prevSubject)
-  Cypress.Commands.add('pButton', (selector: string, options?: NgButtonOptions) => {
-    return pButtonCore(cy.get(selector), options);
-  });
+  // Add cy.pButton() command (supports optional selector and prevSubject)
+  Cypress.Commands.add(
+    'pButton',
+    {prevSubject: 'optional'},
+    (subject: any, selectorOrOptions?: string | PButtonOptions, options?: PButtonOptions) => {
+      const selector = typeof selectorOrOptions === 'string' ? selectorOrOptions : undefined;
+      const resolvedOptions = typeof selectorOrOptions === 'string' ? options : selectorOrOptions;
 
-  // Add chainable .pButton() method (child command with prevSubject: 'element')
-  Cypress.Commands.add('pButton', {prevSubject: 'element'}, (subject: any, options?: NgButtonOptions) => {
-    // Subject is already a jQuery element from previous command, wrap it to get Cypress chainable
-    return pButtonCore(cy.wrap(subject), options);
-  });
+      const buttonChainable = subject
+        ? cy.wrap(subject)
+        : selector
+          ? cy.get(selector)
+          : cy.get('p-button');
+
+      return pButtonCore(buttonChainable, resolvedOptions);
+    }
+  );
 
   // Add cy.pTabs() command (supports optional prevSubject to act as parent or child)
   Cypress.Commands.add(

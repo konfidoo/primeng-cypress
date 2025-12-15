@@ -1,10 +1,9 @@
 /// <reference types="cypress" />
-import {NgButtonOptions} from './types';
+import {PButtonOptions} from './types';
 import {ensureClasses} from './util';
 import Chainable = Cypress.Chainable;
 
-// Declare global cy for runtime access (typed via Cypress types)
-// (no `any` — the global `cy` is provided by the Cypress type declarations)
+declare var cy: any;
 
 /**
  * Core logic for testing PrimeNG Button component (p-button)
@@ -15,33 +14,28 @@ import Chainable = Cypress.Chainable;
  */
 export function pButtonCore(
   element: Chainable<any>,
-  options: NgButtonOptions = {}
-): any {
-  element.should('exist');
-  element.should('have.prop', 'nodeName', 'P-BUTTON');
+  options: PButtonOptions = {}
+): Chainable<any> {
+  element.as('pButton');
 
-  // Check if button is disabled
+  cy.get('@pButton').should('match', 'p-button');
+  const button = cy.get('@pButton').find('button');
+  button.should('exist');
+
   if (options.disabled !== undefined) {
-    if (options.disabled) {
-      element.find('button').should('be.disabled');
-    } else {
-      element.find('button').should('not.be.disabled');
-    }
+    button.should(options.disabled ? 'be.disabled' : 'not.be.disabled');
   }
 
   if (options.expectClasses !== undefined) {
-    ensureClasses(element, options.expectClasses);
+    ensureClasses(cy.get('@pButton'), options.expectClasses);
   }
 
-  // Check expected label
   if (options.expectLabel !== undefined) {
-    element.should('contain.text', options.expectLabel);
+    cy.get('@pButton').should('contain.text', options.expectLabel);
   }
 
-  // Click the button if requested
   if (options.click === true) {
-    // Ensure button is not disabled before clicking
-    element.should('not.be.disabled').click();
+    button.should('not.be.disabled').click();
   }
 
   return element;
@@ -70,13 +64,12 @@ export function pButtonCore(
  * ```
  */
 export function pButton(
-  selector: string | Chainable<any>,
-  options: NgButtonOptions = {}
+  selector?: string | Chainable<any>,
+  options: PButtonOptions = {}
 ): any {
-  // Get the button element
   const button = typeof selector === 'string'
     ? cy.get(selector)
-    : selector;
+    : selector ?? cy.get('p-button');
 
   return pButtonCore(button, options);
 }

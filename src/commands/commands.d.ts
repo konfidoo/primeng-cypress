@@ -1,5 +1,5 @@
-import { NgButtonOptions } from './types';
-import { pButtonCore } from './pButton';
+import {PButtonOptions} from './types';
+import {pButtonCore} from './pButton';
 
 // Declare global Cypress and cy for runtime access
 declare var Cypress: any;
@@ -23,13 +23,13 @@ export function registerPrimeNGCommands(): void {
   }
 
   // Add cy.pButton() command (parent command without prevSubject)
-  Cypress.Commands.add('pButton', (selector: string, options?: NgButtonOptions) => {
+  Cypress.Commands.add('pButton', (selector: string, options?: PButtonOptions) => {
     return pButtonCore(cy.get(selector), options);
   });
 
   // Add chainable .pButton() method (child command with prevSubject: 'element')
   // Note: Cypress supports registering the same command name with different prevSubject options
-  Cypress.Commands.add('pButton', { prevSubject: 'element' }, (subject: any, options?: NgButtonOptions) => {
+  Cypress.Commands.add('pButton', {prevSubject: 'element'}, (subject: any, options?: PButtonOptions) => {
     // Subject is already a jQuery element from previous command, wrap it to get Cypress chainable
     return pButtonCore(cy.wrap(subject), options);
   });

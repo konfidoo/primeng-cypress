@@ -6,7 +6,7 @@
 
 /// <reference path="./cypress.d.ts" />
 
-export { pButton } from './pButton';
-export { pTabs } from './pTabs';
-export type { NgButtonOptions, PTabsOptions } from './types';
-export { registerPrimeNGCommands } from './commands';
+export {pButton} from './pButton';
+export {pTabs} from './pTabs';
+export type {PButtonOptions, PTabsOptions} from './types';
+export {registerPrimeNGCommands} from './commands';
