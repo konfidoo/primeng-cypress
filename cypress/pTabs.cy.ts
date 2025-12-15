@@ -5,7 +5,7 @@ import {Tab, TabList, TabPanel, TabPanels, Tabs} from 'primeng/tabs';
 
 const IMPORTS = [Tabs, TabPanel, TabList, Tab, TabPanels];
 const TABS_TEMPLATE = `
-        <p-tabs value="0">
+        <p-tabs value="0" class="my-test-cls">
           <p-tablist>
             <p-tab value="0">Header I</p-tab>
             <p-tab value="1">Header II</p-tab>
@@ -92,6 +92,20 @@ describe('pTabs.cy.ts', () => {
 
     // Validate the provided expectedTabCount option
     cy.get('p-tabs').pTabs({expectedTabCount: 3});
+  });
+
+  it('validates the expected classes option', () => {
+    @Component({
+      imports: IMPORTS,
+      template: TABS_TEMPLATE,
+    })
+      // Mount the component
+    class TestHostComponent {
+    }
+
+    (cy as any).mount(TestHostComponent);
+
+    cy.get('p-tabs').pTabs({expectClasses: ['my-test-cls']});
   });
 
   it('works with the activeTab validation option', () => {

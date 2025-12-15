@@ -1,4 +1,6 @@
+/// <reference types="cypress" />
 import {PTabsOptions} from './types';
+import {ensureClasses} from './util';
 import Chainable = Cypress.Chainable;
 
 // Declare global cy for runtime access
@@ -21,6 +23,10 @@ export function pTabsCore(
   // Verify the element is a P-TABS element
   cy.get('@pTabs').should('match', 'p-tabs');
   cy.get('@pTabs').find('p-tabpanels').should('exist');
+
+  if (options.expectClasses !== undefined) {
+    ensureClasses(cy.get('@pTabs'), options.expectClasses);
+  }
 
   // Check expected number of tabs
   if (typeof options.expectedTabCount === 'number') {
