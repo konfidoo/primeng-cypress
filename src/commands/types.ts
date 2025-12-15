@@ -39,6 +39,9 @@ export interface PDatePickerOptions {
 
   /**
    * Date selection configuration
+   * Note: Month navigation is currently limited. The implementation assumes
+   * the desired month is already displayed. The month parameter serves as
+   * a reference for which month the day belongs to.
    */
   pick?: {
     /**
@@ -46,7 +49,7 @@ export interface PDatePickerOptions {
      */
     day: number;
     /**
-     * Month to pick (1-12)
+     * Month to pick (1-12) - currently for reference only, navigation not implemented
      */
     month: number;
   };

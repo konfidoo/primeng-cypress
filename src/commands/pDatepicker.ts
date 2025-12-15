@@ -90,7 +90,8 @@ export function pDatepickerCore(
   // Handle inline/autoOpen logic for opening the datepicker panel
   if (options.pick) {
     // Determine if we need to open the panel
-    const needsOpen = !options.inline && options.autoOpen !== false;
+    // Only open if explicitly set to true and not inline
+    const needsOpen = !options.inline && options.autoOpen === true;
     
     if (needsOpen) {
       // Click on the input or button to open the datepicker panel
@@ -107,21 +108,27 @@ export function pDatepickerCore(
     }
 
     // Navigate to the correct month if needed
-    // First, we need to check the current displayed month and navigate if necessary
+    // Note: Month navigation is currently limited. This implementation assumes
+    // the desired month is already displayed or uses the default view.
+    // For production use, implement navigation logic by clicking prev/next buttons
+    // to reach the target month. The month parameter is optional and primarily
+    // serves as a reference for which month the day belongs to.
     if (options.pick.month) {
-      // This is a simplified approach - in a real implementation, you might need
-      // to click next/prev buttons to navigate to the correct month
-      // For now, we'll assume we can select from the current view
+      // TODO: Implement month navigation logic
+      // This would involve comparing current month with target month
+      // and clicking next/previous month buttons accordingly
     }
 
     // Select the day
     if (options.pick.day) {
       // Find and click the day cell
-      // PrimeNG datepicker uses various selectors for day cells
+      // Note: The selector strategy may need adjustment based on PrimeNG version
+      // Different versions may use different attributes or class names
+      // Common selectors: td containing the day number, [aria-label], or specific classes
       cy.get('.p-datepicker')
-        .find(`[data-date="${options.pick.day}"]`)
+        .contains('td', options.pick.day.toString())
         .first()
-        .click({ force: true });
+        .click();
     }
   }
 
