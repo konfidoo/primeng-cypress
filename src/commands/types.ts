@@ -17,3 +17,19 @@ export interface NgButtonOptions {
    */
   expectLabel?: string;
 }
+
+/**
+ * Options for testing PrimeNG ToggleSwitch component
+ */
+export interface PSwitchOptions {
+  /**
+   * Check if the switch is active before interaction
+   */
+  isActive?: boolean;
+
+  /**
+   * Whether to set the switch active (checked) after clicking
+   * Default: true
+   */
+  setActive?: boolean;
+}
