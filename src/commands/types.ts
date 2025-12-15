@@ -17,3 +17,18 @@ export interface NgButtonOptions {
    */
   expectLabel?: string;
 }
+
+/**
+ * Options for toggleInputField command
+ */
+export interface PToggleInputFieldOptions {
+  /**
+   * Value to input into the field
+   */
+  inputValue?: string;
+
+  /**
+   * Expected initial value of the readonly field
+   */
+  expectedValue?: string;
+}

@@ -5,5 +5,6 @@
  */
 
 export { pButton } from './pButton';
-export type { NgButtonOptions } from './types';
+export { toggleInputField } from './toggleInputField';
+export type { NgButtonOptions, PToggleInputFieldOptions } from './types';
 export { registerPrimeNGCommands } from './commands';

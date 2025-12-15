@@ -1,5 +1,7 @@
-import { NgButtonOptions } from './types';
+import { NgButtonOptions, PToggleInputFieldOptions } from './types';
 import { pButtonCore } from './pButton';
+import { toggleInputFieldCore } from './toggleInputField';
+import { e2eCore, typeTextCore } from './helpers';
 
 // Declare global Cypress and cy for runtime access
 declare var Cypress: any;
@@ -32,5 +34,20 @@ export function registerPrimeNGCommands(): void {
   Cypress.Commands.add('pButton', { prevSubject: 'element' }, (subject: any, options?: NgButtonOptions) => {
     // Subject is already a jQuery element from previous command, wrap it to get Cypress chainable
     return pButtonCore(cy.wrap(subject), options);
+  });
+
+  // Add chainable .e2e() method for selecting by data-test attribute
+  Cypress.Commands.add('e2e', { prevSubject: 'element' }, (subject: any, testId: string) => {
+    return e2eCore(cy.wrap(subject), testId);
+  });
+
+  // Add chainable .typeText() method for typing text with clear
+  Cypress.Commands.add('typeText', { prevSubject: 'element' }, (subject: any, text: string) => {
+    return typeTextCore(cy.wrap(subject), text);
+  });
+
+  // Add chainable .toggleInputField() method (child command with prevSubject: 'element')
+  Cypress.Commands.add('toggleInputField', { prevSubject: 'element' }, (subject: any, options?: PToggleInputFieldOptions) => {
+    return toggleInputFieldCore(cy.wrap(subject), options);
   });
 }
