@@ -30,11 +30,12 @@ describe('pToggleSwitch.cy.ts', () => {
     cy.get('.status').should('have.text', 'true')
   })
 
-  it('verifies active state before clicking', () => {
+  it('toggles from checked to unchecked', () => {
     @Component({
       imports: [ToggleSwitchModule, FormsModule],
       template: `
         <p-toggleswitch id="activeSwitch" [(ngModel)]="checked"></p-toggleswitch>
+        <span class="status">{{checked}}</span>
       `
     })
     class ActiveHostComponent {
@@ -43,8 +44,11 @@ describe('pToggleSwitch.cy.ts', () => {
 
     ;(cy as any).mount(ActiveHostComponent, { imports: [ToggleSwitchModule, FormsModule] })
 
-    // Test that the switch is initially active and remains active after click
-    cy.get('#activeSwitch').pToggleSwitch({ isActive: true, setActive: true })
+    // Test that the switch is initially active and becomes inactive after click
+    cy.get('#activeSwitch').pToggleSwitch({ isActive: true, setActive: false })
+    
+    // Verify the status text shows false
+    cy.get('.status').should('have.text', 'false')
   })
 
   it('toggles from unchecked to checked', () => {
@@ -62,5 +66,26 @@ describe('pToggleSwitch.cy.ts', () => {
 
     // Use pToggleSwitch with setActive option
     cy.get('#toggleSwitch').pToggleSwitch({ setActive: true })
+  })
+
+  it('verifies inactive state before clicking', () => {
+    @Component({
+      imports: [ToggleSwitchModule, FormsModule],
+      template: `
+        <p-toggleswitch id="inactiveSwitch" [(ngModel)]="checked"></p-toggleswitch>
+        <span class="status">{{checked}}</span>
+      `
+    })
+    class InactiveHostComponent {
+      checked = false
+    }
+
+    ;(cy as any).mount(InactiveHostComponent, { imports: [ToggleSwitchModule, FormsModule] })
+
+    // Test that the switch is initially inactive and becomes active after click
+    cy.get('#inactiveSwitch').pToggleSwitch({ isActive: false, setActive: true })
+    
+    // Verify the status text shows true
+    cy.get('.status').should('have.text', 'true')
   })
 })
