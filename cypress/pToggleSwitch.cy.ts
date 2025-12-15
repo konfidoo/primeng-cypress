@@ -52,12 +52,10 @@ describe('pToggleSwitch.cy.ts', () => {
       imports: [ToggleSwitchModule, FormsModule],
       template: `
         <p-toggleswitch id="toggleSwitch" [(ngModel)]="checked"></p-toggleswitch>
-        <span class="count">{{clickCount}}</span>
       `
     })
     class ToggleHostComponent {
       checked = false
-      clickCount = 0
     }
 
     ;(cy as any).mount(ToggleHostComponent, { imports: [ToggleSwitchModule, FormsModule] })

@@ -22,14 +22,19 @@ export function pToggleSwitchCore(
   // Check if switch is active before interaction
   if (options.isActive === true) {
     element.should('have.class', 'p-toggleswitch-checked');
+  } else if (options.isActive === false) {
+    element.should('not.have.class', 'p-toggleswitch-checked');
   }
 
   // Click the switch
   element.click();
 
-  // Check if switch is active after interaction (default behavior)
-  if (options.setActive) {
+  // Check if switch is active after interaction
+  // Default behavior (when setActive is undefined or explicitly true) is to verify checked state
+  if (options.setActive !== false) {
     element.should('have.class', 'p-toggleswitch-checked');
+  } else {
+    element.should('not.have.class', 'p-toggleswitch-checked');
   }
 
   return element;

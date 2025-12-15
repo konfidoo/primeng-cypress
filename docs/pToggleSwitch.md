@@ -25,11 +25,15 @@ cy.wrap(subject)
 Before clicking the element, the command can optionally verify if the switch is in an active (checked) state:
 
 - When `options.isActive === true`, the command checks for the presence of the `p-toggleswitch-checked` CSS class
+- When `options.isActive === false`, the command verifies the switch does NOT have the `p-toggleswitch-checked` CSS class
+- When `options.isActive` is `undefined`, no pre-click state verification is performed
 - This ensures the switch is in the expected state before interaction
 
 ```typescript
 if (options.isActive === true) {
   cy.wrap(subject).should('have.class', 'p-toggleswitch-checked');
+} else if (options.isActive === false) {
+  cy.wrap(subject).should('not.have.class', 'p-toggleswitch-checked');
 }
 ```
 
@@ -43,15 +47,17 @@ cy.wrap(subject).click();
 
 ### setActive Evaluation
 
-After clicking, the command can verify the resulting state:
+After clicking, the command verifies the resulting state:
 
-- When `options.setActive` is `true` (default), the command verifies that the switch has the `p-toggleswitch-checked` class
-- This ensures the switch is in the active/checked state after the click
-- If `setActive` is `false` or `undefined`, this verification is skipped
+- When `options.setActive` is `true` or `undefined` (default behavior), the command verifies that the switch has the `p-toggleswitch-checked` class
+- When `options.setActive` is `false`, the command verifies the switch does NOT have the `p-toggleswitch-checked` class
+- This ensures the switch is in the expected state after the click
 
 ```typescript
-if (options.setActive) {
+if (options.setActive !== false) {
   cy.wrap(subject).should('have.class', 'p-toggleswitch-checked');
+} else {
+  cy.wrap(subject).should('not.have.class', 'p-toggleswitch-checked');
 }
 ```
 
