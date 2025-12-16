@@ -129,7 +129,7 @@ export function pSelectCore(
       }
     } else {
       if (opts.selectValue !== undefined) {
-        cy.get('@pSelect').find(`[${opts.selectBy}="${opts.selectValue}"]`)
+        cy.get('@pSelect').find(`[${opts.selectBy}="${opts.selectValue}"]`).should('exist');
       }
     }
   }
