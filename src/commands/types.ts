@@ -118,3 +118,34 @@ export type PConfirmDialogOptions = {
    */
   close?: 'accept' | 'reject';
 };
+
+/**
+ * Options for testing PrimeNG Panel component
+ */
+export interface PPanelOptions extends GeneralElementOptions {
+  /**
+   * Whether the panel is initially collapsed
+   */
+  isCollapsed?: boolean;
+
+  /**
+   * Whether the panel supports toggle behavior (has a toggle button)
+   */
+  isToggleable?: boolean;
+
+  /**
+   * Toggle the panel state when true
+   */
+  toggle?: boolean;
+
+  /**
+   * Expect the panel header title text
+   */
+  expectTitle?: string;
+
+  /**
+   * Forcefully set the panel state regardless of current state.
+   * When provided, this takes precedence over `toggle`
+   */
+  setState?: 'expanded' | 'collapsed';
+}
