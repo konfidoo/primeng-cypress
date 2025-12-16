@@ -65,3 +65,30 @@ export interface PToggleSwitchOptions extends GeneralElementOptions {
    */
   click?: boolean;
 }
+
+/**
+ * Options for testing PrimeNG Checkbox component
+ */
+export interface PCheckboxOptions extends GeneralElementOptions {
+  /**
+   * Whether the underlying input is disabled
+   */
+  disabled?: boolean;
+
+  /**
+   * Expected current checked state (true/false)
+   */
+  currentValue?: boolean;
+
+  /**
+   * If provided, will attempt to change the checkbox value to this boolean by clicking
+   * This option is more precise and takes precedence over `toggle` when both are provided.
+   */
+  selectValue?: boolean;
+
+  /**
+   * If true, will toggle (click) the checkbox to flip its current state.
+   * Note: when both `selectValue` and `toggle` are provided, `selectValue` is leading and will be used.
+   */
+  toggle?: boolean;
+}

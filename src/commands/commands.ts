@@ -1,10 +1,11 @@
 // filepath: /home/nico-blum/projects/primeng-cypress/lib/commands/commands.ts
 // Register Cypress commands for PrimeNG components
 
-import {PButtonOptions, PTabsOptions, PToggleSwitchOptions} from './types';
+import {PButtonOptions, PTabsOptions, PToggleSwitchOptions, PCheckboxOptions} from './types';
 import {pButtonCore} from './pButton';
 import {pTabsCore} from './pTabs';
 import {pToggleSwitchCore} from './pToggleSwitch';
+import {pCheckboxCore} from './pCheckbox';
 
 // Declare global Cypress and cy for runtime access
 declare var Cypress: any;
@@ -79,6 +80,24 @@ export function registerPrimeNGCommands(): void {
           : cy.get('p-toggleswitch');
 
       return pToggleSwitchCore(toggleChainable, resolvedOptions);
+    }
+  );
+
+  // Add cy.pCheckbox() command (supports optional prevSubject)
+  Cypress.Commands.add(
+    'pCheckbox',
+    {prevSubject: 'optional'},
+    (subject: any, selectorOrOptions?: string | PCheckboxOptions, options?: PCheckboxOptions) => {
+      const selector = typeof selectorOrOptions === 'string' ? selectorOrOptions : undefined;
+      const resolvedOptions = typeof selectorOrOptions === 'string' ? options : selectorOrOptions;
+
+      const checkboxChainable = subject
+        ? cy.wrap(subject)
+        : selector
+          ? cy.get(selector)
+          : cy.get('p-checkbox');
+
+      return pCheckboxCore(checkboxChainable, resolvedOptions);
     }
   );
 }

@@ -1,4 +1,4 @@
-import {PButtonOptions, PTabsOptions, PToggleSwitchOptions} from './types';
+import {PButtonOptions, PTabsOptions, PToggleSwitchOptions, PCheckboxOptions} from './types';
 
 declare global {
   namespace Cypress {
@@ -64,6 +64,21 @@ declare global {
       pToggleSwitch(selector: string, options?: PToggleSwitchOptions): Chainable<JQuery<HTMLElement>>;
 
       pToggleSwitch(options?: PToggleSwitchOptions): Chainable<JQuery<HTMLElement>>;
+
+      /**
+       * Test helper for PrimeNG Checkbox component (p-checkbox)
+       *
+       * Supports parent and chainable forms. Defaults to selecting the first `p-checkbox`.
+       *
+       * Examples:
+       * ```typescript
+       * cy.pCheckbox('#agree', { currentValue: false, selectValue: true });
+       * cy.get('p-checkbox').pCheckbox({ disabled: true });
+       * ```
+       */
+      pCheckbox(selector: string, options?: PCheckboxOptions): Chainable<JQuery<HTMLElement>>;
+
+      pCheckbox(options?: PCheckboxOptions): Chainable<JQuery<HTMLElement>>;
     }
   }
 }

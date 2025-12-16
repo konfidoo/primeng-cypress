@@ -9,5 +9,6 @@
 export {pButton} from './pButton';
 export {pTabs} from './pTabs';
 export {pToggleSwitch} from './pToggleSwitch';
-export type {PButtonOptions, PTabsOptions, PToggleSwitchOptions} from './types';
+export {pCheckbox} from './pCheckbox';
+export type {PButtonOptions, PTabsOptions, PToggleSwitchOptions, PCheckboxOptions} from './types';
 export {registerPrimeNGCommands} from './commands';
