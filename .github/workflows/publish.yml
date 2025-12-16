@@ -1,0 +1,63 @@
+name: Publish package
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    name: Publish to npm
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --prefer-offline --no-audit --progress=false
+
+      - name: Type check
+        run: npx tsc --noEmit
+
+      - name: Build library
+        run: npm run build:lib
+
+      - name: Verify tag matches package.json version
+        # This prevents accidental publishes where the tag and package version differ
+        run: |
+          if [ -z "${GITHUB_REF}" ]; then
+            echo "GITHUB_REF is not set"; exit 1
+          fi
+          tag=${GITHUB_REF#refs/tags/}
+          pkg_version=$(node -p "require('./package.json').version")
+          echo "Tag: $tag, package.json version: v$pkg_version"
+          if [ "$tag" != "v$pkg_version" ]; then
+            echo "Tag ($tag) does not match package.json version (v$pkg_version)"
+            exit 1
+          fi
+
+      - name: Create .npmrc using NPM_TOKEN
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          if [ -z "$NPM_TOKEN" ]; then
+            echo "NPM_TOKEN is not set. Add it to repository secrets as 'NPM_TOKEN'"; exit 1
+          fi
+          # Write token to a user npmrc so `npm publish` uses it
+          printf "//registry.npmjs.org/:_authToken=%s\n" "$NPM_TOKEN" > ~/.npmrc
+          # Optional: show whoami (will fail if token wrong) but don't fail pipeline for debugging
+          npm whoami || true
+
+      - name: Publish package
+        run: npm publish --access public
+
