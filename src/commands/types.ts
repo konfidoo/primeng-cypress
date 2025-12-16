@@ -155,3 +155,46 @@ export interface PPanelOptions extends GeneralElementOptions {
    */
   setState?: 'expanded' | 'collapsed';
 }
+
+/**
+ * Options for testing PrimeNG select component
+ */
+export interface PSelectOptions extends GeneralElementOptions {
+  /**
+   * Validates the currently selected value (label text)
+   */
+  currentValue?: string;
+
+  /**
+   * The value which should be selected. Interpreted according to `selectBy`.
+   */
+  selectValue?: string;
+
+  /**
+   * Determines how to select an option: use 'label' (the default) to match by visible label text,
+   * or provide a custom attribute name (such as 'id' or 'data-optionId') to match against that
+   * attribute on option elements. Any string other than 'label' is treated as a custom attribute name.
+   */
+  selectBy?: 'label' | string;
+
+  /**
+   * The expected count of options in the dropdown overlay
+   */
+  expectedOptionCount?: number;
+
+  /**
+   * A list of expected option labels (order-sensitive when provided)
+   */
+  expectedOptions?: string[];
+
+  /**
+   * When true, skip validating the selected value after clicking (useful if the dropdown
+   * disappears or the host doesn't immediately update its label)
+   */
+  skipValidation?: boolean;
+
+  /**
+   * When true, assert the host is disabled and do not attempt to open the overlay or click options.
+   */
+  isDisabled?: boolean;
+}
