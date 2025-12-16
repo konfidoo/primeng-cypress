@@ -1,6 +1,6 @@
 # pSelect
 
-Summary: Helper for asserting and interacting with PrimeNG `p-select` dropdowns.
+The `pSelect` helper provides Cypress commands for interacting with and asserting the state of PrimeNG `p-select` dropdown components. It allows you to select options, validate the selected value, and check the available options in the dropdown.
 
 ## Usage
 
