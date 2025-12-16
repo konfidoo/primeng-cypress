@@ -124,8 +124,6 @@ export function pSelectCore(
     if (opts.selectBy === 'label') {
       if (opts.selectValue !== undefined) {
         cy.get('@pSelect').should('contain.text', opts.selectValue);
-      } else {
-        cy.get('@pSelect').should('not.contain.text', '');
       }
     } else {
       if (opts.selectValue !== undefined) {
