@@ -119,7 +119,7 @@ export function pSelectCore(
   }
 
   // post-selection validation
-  if (!options.skipValidation) {
+  if (!opts.skipValidation) {
     cy.get(overlaySelector).should('not.exist');
     if (opts.selectBy === 'label') {
       if (opts.selectValue !== undefined) {
