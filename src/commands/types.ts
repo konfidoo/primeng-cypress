@@ -171,9 +171,9 @@ export interface PSelectOptions extends GeneralElementOptions {
   selectValue?: string;
 
   /**
-   * If it should be selected by label or id (default = label)
-   * You can also provide a custom attribute name (for example: 'data-optionId') to match against that
-   * attribute on option elements.
+   * Determines how to select an option: use 'label' (the default) to match by visible label text,
+   * or provide a custom attribute name (such as 'id' or 'data-optionId') to match against that
+   * attribute on option elements. Any string other than 'label' is treated as a custom attribute name.
    */
   selectBy?: 'label' | string;
 
