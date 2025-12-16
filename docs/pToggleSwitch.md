@@ -10,29 +10,39 @@ This helper supports both parent and chainable forms and attempts to detect comm
 Parent command (selector):
 
 ```ts
-cy.pToggleSwitch('#my-toggle', {expectChecked: true, click: true})
+cy.pToggleSwitch('#my-toggle', {currentValue: true, toggle: true})
 ```
 
 Chainable usage after `cy.get()`:
 
 ```ts
-cy.get('#my-toggle').pToggleSwitch({expectChecked: false})
+cy.get('#my-toggle').pToggleSwitch({currentValue: false})
 ```
 
 ## Options
 
-- `expectChecked?: boolean` — assert whether the toggle is checked. The helper will inspect inputs, aria attributes or
-  host classes.
-- `click?: boolean` — perform a click on the primary clickable target (button > input > host) to toggle state.
-- `disabled?: boolean` — assert the disabled state (checks input/button disabled or `p-disabled` host class).
-- `expectClasses?: string[]` — assert host classes are present.
+- `currentValue?: boolean` — Assert whether the toggle is currently checked (`true`) or not (`false`). The helper
+  inspects inputs, aria attributes or host classes.
+- `selectValue?: boolean` — If provided, the helper will attempt to change the toggle to this explicit boolean by
+  clicking only when necessary. This option is precise and takes precedence over `toggle` when both are provided.
+- `toggle?: boolean` — If `true`, the helper will click to flip (invert) the current state. Use this when you want a
+  plain toggle action rather than setting a specific target value. `selectValue` wins if both are present.
+- `disabled?: boolean` — Assert the disabled state (checks input/button disabled or `p-disabled` host class).
+- `expectClasses?: string[]` — Assert that host classes are present.
 
 ## Examples
 
-- Click and verify checked state + host classes:
+- Click to flip state and verify host classes:
 
 ```ts
-cy.get('#my-toggle').pToggleSwitch({click: true, expectChecked: true, expectClasses: ['special']})
+cy.get('#my-toggle').pToggleSwitch({toggle: true, currentValue: false, expectClasses: ['special']})
+```
+
+- Set a specific value (idempotent):
+
+```ts
+cy.get('#my-toggle').pToggleSwitch({selectValue: true})
+cy.get('#my-toggle').pToggleSwitch({selectValue: false})
 ```
 
 - Verify disabled state without clicking:

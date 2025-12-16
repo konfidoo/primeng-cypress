@@ -19,7 +19,34 @@ describe('pToggleSwitch.cy.ts', () => {
 
     // Chainable command usage (prefer this form for reliable mounting)
     // Click only to exercise the helper's click behavior (keep test minimal)
-    cy.get('#toggle').pToggleSwitch({click: true})
+    cy.get('#toggle').pToggleSwitch({currentValue: false})
+    cy.get('#toggle').pToggleSwitch({toggle: true})
+    cy.get('#toggle').pToggleSwitch({currentValue: true})
+  })
+
+  it('should set a specific value with selectValue', () => {
+    @Component({
+      imports: [ToggleSwitchModule, FormsModule],
+      template: `
+        <p-toggleswitch id="toggle" [(ngModel)]="checked"></p-toggleswitch>
+        <span class="val">{{ checked ? 'checked' : 'not checked' }}</span>
+      `
+    })
+    class TestHostComponent {
+      checked = false
+    }
+
+    ;(cy as any).mount(TestHostComponent, {imports: [ToggleSwitchModule, FormsModule]})
+
+    // Chainable command usage (prefer this form for reliable mounting)
+    // Click only to exercise the helper's click behavior (keep test minimal)
+    cy.get('#toggle').pToggleSwitch({currentValue: false})
+    cy.get('#toggle').pToggleSwitch({selectValue: true})
+    cy.get('#toggle').pToggleSwitch({currentValue: true})
+    cy.get('#toggle').pToggleSwitch({selectValue: true})
+    cy.get('#toggle').pToggleSwitch({currentValue: true})
+    cy.get('#toggle').pToggleSwitch({selectValue: false})
+    cy.get('#toggle').pToggleSwitch({currentValue: false})
   })
 
   it('validates checked state (expectChecked option)', () => {
@@ -35,7 +62,7 @@ describe('pToggleSwitch.cy.ts', () => {
 
     ;(cy as any).mount(TestHostComponent, {imports: [ToggleSwitchModule, FormsModule]})
 
-    cy.get('#checkedToggle').pToggleSwitch({isChecked: true})
+    cy.get('#checkedToggle').pToggleSwitch({currentValue: true})
   })
 
   it('validates disabled state (disabled option)', () => {
@@ -69,10 +96,11 @@ describe('pToggleSwitch.cy.ts', () => {
 
     // Click the toggle and assert checked state and host classes in one call
     cy.get('#combined').pToggleSwitch({
-      click: true,
-      isChecked: false,
+      toggle: true,
+      currentValue: false,
       disabled: false,
       expectClasses: ['special', 'large']
     })
+    cy.get('#combined').pToggleSwitch({currentValue: true})
   })
 })

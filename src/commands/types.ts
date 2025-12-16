@@ -51,7 +51,7 @@ export interface PToggleSwitchOptions extends GeneralElementOptions {
   /**
    * Expected initial checked state of the toggle switch
    */
-  isChecked?: boolean;
+  currentValue?: boolean;
 
   /**
    * Whether the toggle is disabled
@@ -59,11 +59,17 @@ export interface PToggleSwitchOptions extends GeneralElementOptions {
   disabled?: boolean;
 
   /**
+   * If provided, will attempt to change the toggle value to this boolean by clicking.
+   * This option is more precise and takes precedence over `toggle` when both are provided.
+   */
+  selectValue?: boolean;
+
+  /**
    * Whether to perform a click on the toggle to change its state
    * combine with isChecked to ensure the state changes appropriately
    * example if isChecked is true and click is true, after the click the toggle should be unchecked
    */
-  click?: boolean;
+  toggle?: boolean;
 }
 
 /**

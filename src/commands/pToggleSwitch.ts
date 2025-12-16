@@ -28,13 +28,27 @@ export function pToggleSwitchCore(
     ensureClasses(cy.get('@pToggleSwitch'), options.expectClasses);
   }
 
-  if (options.isChecked === true) {
+  if (options.currentValue === true) {
     cy.get('@pToggleSwitch').should('have.class', 'p-toggleswitch-checked');
-  } else if (options.isChecked === false) {
+  } else if (options.currentValue === false) {
     cy.get('@pToggleSwitch').should('not.have.class', 'p-toggleswitch-checked');
   }
 
-  if (options.click === true) {
+  // If selectValue is provided, set explicit state (takes precedence over toggle)
+  if (options.selectValue !== undefined) {
+    cy.get('@pToggleSwitch').then(($el: any) => {
+      const isChecked = $el.hasClass('p-toggleswitch-checked');
+      const desired = options.selectValue === true;
+      if (isChecked !== desired) {
+        cy.wrap($el).click();
+        // verify changed to desired
+        cy.wrap($el).should(desired ? 'have.class' : 'not.have.class', 'p-toggleswitch-checked');
+      } else {
+        // already in desired state - assert
+        cy.wrap($el).should(desired ? 'have.class' : 'not.have.class', 'p-toggleswitch-checked');
+      }
+    });
+  } else if (options.toggle === true) {
     cy.get('@pToggleSwitch').then(($el: any) => {
       const isInitiallyChecked = $el.hasClass('p-toggleswitch-checked');
       cy.get('@pToggleSwitch').click();
@@ -70,4 +84,3 @@ export function pToggleSwitch(
 
   return pToggleSwitchCore(el, options);
 }
-

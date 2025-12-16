@@ -2,22 +2,28 @@
 
 [![Pull Request Tests](https://github.com/konfidoo/primeng-cypress/actions/workflows/ci.yml/badge.svg)](https://github.com/konfidoo/primeng-cypress/actions/workflows/ci.yml)
 
-A lightweight helper library that provides Cypress test helpers for PrimeNG components (examples: `pButton`, `pTabs`,
-`pToggleSwitch`).
+A lightweight helper library that provides Cypress test helpers for PrimeNG components (examples: `pButton`,
+`pTabs`, ...).
 
 This README explains how to run the included component tests locally and how to use this library from another project (
 locally during development or as an installed dependency).
 
 ## Contents
 
-- `lib/commands` - implementation and types for commands such as `pButton`, `pTabs`, and `registerPrimeNGCommands()`
+- `lib/commands` - implementation and types for commands such as `pButton`, `pTabs`
 - `cypress/` - example Cypress tests and support files that show how to register commands and mount Angular components
 
 ## Supported components
 
-- `pButton` — see [`docs/pButton.md`](docs/pButton.md) for usage and examples.
-- `pTabs` — see [`docs/pTabs.md`](docs/pTabs.md) for usage and examples.
-- `pToggleSwitch` — see [`docs/pToggleSwitch.md`](docs/pToggleSwitch.md) for usage and examples.
+- [pButton](docs/pButton.md)
+- [pCheckbox](docs/pCheckbox.md)
+- [pTabs](docs/pTabs.md)
+- [pToggleSwitch](docs/pToggleSwitch.md)
+
+> Stability note: The public command API (command names and option shapes) may still change while the package version is
+> below `1.0.0`. Consumers should expect possible breaking changes to commands/options until the project reaches
+`1.0.0`.
+> Pin the package version in downstream projects or review changelogs before upgrading.
 
 ## Not yet supported components
 
@@ -52,12 +58,12 @@ registerPrimeNGCommands()
 
 This will register the commands globally so you can use them in your tests.
 
-If the package exports other helpers (for example `pButton`, `pTabs`, `pToggleSwitch` for direct usage), import them
+If the package exports other helpers (for example `pButton`, `pTabs` for direct usage), import them
 from the package
 root:
 
 ```ts
-import {pButton, pTabs, pToggleSwitch} from '@konfidoo/primeng-cypress'
+import {pButton} from '@konfidoo/primeng-cypress'
 ```
 
 ### TypeScript / IDE integration (important)
