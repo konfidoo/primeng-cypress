@@ -1,11 +1,12 @@
 // filepath: /home/nico-blum/projects/primeng-cypress/lib/commands/commands.ts
 // Register Cypress commands for PrimeNG components
 
-import {PButtonOptions, PTabsOptions, PToggleSwitchOptions, PCheckboxOptions} from './types';
+import {PButtonOptions, PCheckboxOptions, PConfirmDialogOptions, PTabsOptions, PToggleSwitchOptions} from './types';
 import {pButtonCore} from './pButton';
 import {pTabsCore} from './pTabs';
 import {pToggleSwitchCore} from './pToggleSwitch';
 import {pCheckboxCore} from './pCheckbox';
+import {pConfirmDialogCore} from './pConfirmDialog';
 
 // Declare global Cypress and cy for runtime access
 declare var Cypress: any;
@@ -98,6 +99,24 @@ export function registerPrimeNGCommands(): void {
           : cy.get('p-checkbox');
 
       return pCheckboxCore(checkboxChainable, resolvedOptions);
+    }
+  );
+
+  // Add cy.pConfirmDialog() command (supports optional prevSubject)
+  Cypress.Commands.add(
+    'pConfirmDialog',
+    {prevSubject: 'optional'},
+    (subject: any, selectorOrOptions?: string | PConfirmDialogOptions, options?: PConfirmDialogOptions) => {
+      const selector = typeof selectorOrOptions === 'string' ? selectorOrOptions : undefined;
+      const resolvedOptions = typeof selectorOrOptions === 'string' ? options : selectorOrOptions;
+
+      const confirmChainable = subject
+        ? cy.wrap(subject)
+        : selector
+          ? cy.get(selector)
+          : cy.get('.p-confirmdialog');
+
+      return pConfirmDialogCore(confirmChainable, resolvedOptions);
     }
   );
 }

@@ -1,4 +1,4 @@
-import {PButtonOptions, PTabsOptions, PToggleSwitchOptions, PCheckboxOptions} from './types';
+import {PButtonOptions, PCheckboxOptions, PConfirmDialogOptions, PTabsOptions, PToggleSwitchOptions} from './types';
 
 declare global {
   namespace Cypress {
@@ -79,6 +79,25 @@ declare global {
       pCheckbox(selector: string, options?: PCheckboxOptions): Chainable<JQuery<HTMLElement>>;
 
       pCheckbox(options?: PCheckboxOptions): Chainable<JQuery<HTMLElement>>;
+
+      /**
+       * Test helper for PrimeNG ConfirmDialog component (p-confirmdialog)
+       *
+       * Supports parent and chainable forms. Defaults to selecting the dialog with
+       * the `.p-confirmdialog` root class.
+       *
+       * @example
+       * ```typescript
+       * // Parent form
+       * cy.pConfirmDialog({ expectedTitle: 'Delete', expectedText: 'Are you sure?', close: 'accept' });
+       *
+       * // Chainable form
+       * cy.get('.p-confirmdialog').pConfirmDialog({ close: 'reject' });
+       * ```
+       */
+      pConfirmDialog(options?: PConfirmDialogOptions): Chainable<JQuery<HTMLElement>>;
+
+      pConfirmDialog(selector: string, options?: PConfirmDialogOptions): Chainable<JQuery<HTMLElement>>;
     }
   }
 }

@@ -98,3 +98,23 @@ export interface PCheckboxOptions extends GeneralElementOptions {
    */
   toggle?: boolean;
 }
+
+/**
+ * Options for testing PrimeNG ConfirmDialog component
+ */
+export type PConfirmDialogOptions = {
+  /**
+   * Expected title text to assert
+   */
+  expectedTitle?: string;
+
+  /**
+   * Expected message/body text to assert
+   */
+  expectedText?: string;
+
+  /**
+   * If 'accept', click the accept button; if 'reject', click the reject button; otherwise undefined
+   */
+  close?: 'accept' | 'reject';
+};
