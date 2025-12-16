@@ -21,6 +21,10 @@ export function pPanelCore(
   // Verify host element
   cy.get('@pPanel').should('have.prop', 'nodeName').and('match', /^P-PANEL$/);
 
+  if (!options?.doNotScroll) {
+    cy.get('@pPanel').scrollIntoView();
+  }
+
   // Optionally assert title
   if (options.expectTitle !== undefined) {
     cy.get('@pPanel').find('.p-panel-header').should('contain.text', options.expectTitle);
@@ -49,7 +53,6 @@ export function pPanelCore(
     }
   }
 
-
   // setState takes precedence: force expanded or collapsed regardless of current state
   if (options.setState !== undefined) {
     cy.get('@pPanel').then(($el: any) => {
@@ -67,11 +70,6 @@ export function pPanelCore(
         cy.wrap($el).should('have.class', 'p-panel-collapsed');
       }
     });
-
-    // finished handling setState
-    if (!options?.doNotScroll) {
-      cy.get('@pPanel').scrollIntoView();
-    }
     return cy.get('@pPanel');
   } else if (options.toggle === true) {
     cy.get('@pPanel').then(($el: any) => {
@@ -86,10 +84,7 @@ export function pPanelCore(
         cy.wrap($el).should('have.class', 'p-panel-collapsed');
       }
     });
-  }
-
-  // Always scroll into view for visibility in tests
-  if (!options?.doNotScroll) {
+  } else if (!options?.doNotScroll) {
     cy.get('@pPanel').scrollIntoView();
   }
 

@@ -20,7 +20,7 @@ and can be passed to any helper that supports them.
 ## Options
 
 - `doNotScroll?: boolean` — When true, the helper will NOT scroll the element into view before assertions or
-  interactions. Default behaviour (when omitted or false) is to scroll to the element to ensure it is visible for
+  interactions. Default behavior (when omitted or false) is to scroll to the element to ensure it is visible for
   interactions in component tests.
 
 - `expectClasses?: string[]` — List of CSS classes expected on the host element. Helpers use an internal `ensureClasses`
