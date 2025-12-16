@@ -1,4 +1,12 @@
-import {PButtonOptions, PCheckboxOptions, PConfirmDialogOptions, PTabsOptions, PToggleSwitchOptions, PPanelOptions} from './types';
+import {
+  PButtonOptions,
+  PCheckboxOptions,
+  PConfirmDialogOptions,
+  PPanelOptions,
+  PSelectOptions,
+  PTabsOptions,
+  PToggleSwitchOptions
+} from './types';
 
 declare global {
   namespace Cypress {
@@ -113,6 +121,21 @@ declare global {
       pPanel(selector: string, options?: PPanelOptions): Chainable<JQuery<HTMLElement>>;
 
       pPanel(options?: PPanelOptions): Chainable<JQuery<HTMLElement>>;
+
+      /**
+       * Test helper for PrimeNG Select component (p-select)
+       *
+       * Supports parent and chainable forms. Defaults to selecting the first `p-select`.
+       *
+       * Examples:
+       * ```ts
+       * cy.pSelect('#country', { selectValue: 'Germany', selectBy: 'label' });
+       * cy.get('p-select').pSelect({ selectValue: 'country_2', selectBy: 'id' });
+       * ```
+       */
+      pSelect(selector: string, options?: PSelectOptions): Chainable<JQuery<HTMLElement>>;
+
+      pSelect(options?: PSelectOptions): Chainable<JQuery<HTMLElement>>;
     }
   }
 }
