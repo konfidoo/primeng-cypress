@@ -22,6 +22,8 @@ locally during development or as an installed dependency).
 - [pTabs](docs/pTabs.md)
 - [pToggleSwitch](docs/pToggleSwitch.md)
 
+All commands support a generic set of options: [general command options](docs/GeneralElementOptions.md)
+
 > Stability note: The public command API (command names and option shapes) may still change while the package version is
 > below `1.0.0`. Consumers should expect possible breaking changes to commands/options until the project reaches
 `1.0.0`.

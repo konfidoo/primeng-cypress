@@ -56,26 +56,32 @@ export function pPanelCore(
       const isCurrentlyCollapsed = $el.hasClass('p-panel-collapsed');
       if (options.setState === 'expanded' && isCurrentlyCollapsed) {
         // click header button to expand
-        cy.wrap($el).find('.p-panel-header').find('p-button').pButton({ click: true });
+        cy.wrap($el).find('.p-panel-header').find('p-button').pButton({click: true});
         cy.wrap($el).should('have.class', 'p-panel-expanded');
-        cy.wrap($el).find('.p-panel-content-container').scrollIntoView();
+        if (!options?.doNotScroll) {
+          cy.wrap($el).find('.p-panel-content-container').scrollIntoView();
+        }
       } else if (options.setState === 'collapsed' && !isCurrentlyCollapsed) {
         // click header button to collapse
-        cy.wrap($el).find('.p-panel-header').find('p-button').pButton({ click: true });
+        cy.wrap($el).find('.p-panel-header').find('p-button').pButton({click: true});
         cy.wrap($el).should('have.class', 'p-panel-collapsed');
       }
     });
 
     // finished handling setState
-    cy.get('@pPanel').scrollIntoView();
+    if (!options?.doNotScroll) {
+      cy.get('@pPanel').scrollIntoView();
+    }
     return cy.get('@pPanel');
   } else if (options.toggle === true) {
     cy.get('@pPanel').then(($el: any) => {
       const initiallyCollapsed = $el.hasClass('p-panel-collapsed');
-      cy.wrap($el).find('.p-panel-header').find('p-button').pButton({ click: true });
+      cy.wrap($el).find('.p-panel-header').find('p-button').pButton({click: true});
       if (initiallyCollapsed) {
         cy.wrap($el).should('have.class', 'p-panel-expanded');
-        cy.wrap($el).find('.p-panel-content-container').scrollIntoView();
+        if (!options?.doNotScroll) {
+          cy.wrap($el).find('.p-panel-content-container').scrollIntoView();
+        }
       } else {
         cy.wrap($el).should('have.class', 'p-panel-collapsed');
       }
@@ -83,7 +89,9 @@ export function pPanelCore(
   }
 
   // Always scroll into view for visibility in tests
-  cy.get('@pPanel').scrollIntoView();
+  if (!options?.doNotScroll) {
+    cy.get('@pPanel').scrollIntoView();
+  }
 
   return cy.get('@pPanel');
 }

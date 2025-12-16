@@ -1,4 +1,10 @@
 export interface GeneralElementOptions {
+  /**
+   * When true, the helper will NOT scroll the element into view.
+   * Default behaviour (undefined or false) is to perform a scroll to ensure
+   * the element is visible for interactions in tests.
+   */
+  doNotScroll?: boolean;
   expectClasses?: string[];
 }
 
@@ -102,7 +108,7 @@ export interface PCheckboxOptions extends GeneralElementOptions {
 /**
  * Options for testing PrimeNG ConfirmDialog component
  */
-export type PConfirmDialogOptions = {
+export interface PConfirmDialogOptions extends GeneralElementOptions {
   /**
    * Expected title text to assert
    */
@@ -117,7 +123,7 @@ export type PConfirmDialogOptions = {
    * If 'accept', click the accept button; if 'reject', click the reject button; otherwise undefined
    */
   close?: 'accept' | 'reject';
-};
+}
 
 /**
  * Options for testing PrimeNG Panel component

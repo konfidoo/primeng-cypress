@@ -18,6 +18,11 @@ export function pToggleSwitchCore(
 ): Chainable<any> {
   element.as('pToggleSwitch');
 
+  // Ensure visibility unless explicitly disabled
+  if (!options?.doNotScroll) {
+    cy.get('@pToggleSwitch').scrollIntoView();
+  }
+
   // Verify the element exists and is a toggle-like component
   cy.get('@pToggleSwitch').should('exist');
   cy.get('@pToggleSwitch')
