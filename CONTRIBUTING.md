@@ -38,7 +38,7 @@ npm install
 # in this repository
 npm link
 # in the consuming project
-npm link primeng-cypress
+npm link @konfidoo/primeng-cypress
 ```
 
 Install dependencies (alternate package manager)
@@ -90,7 +90,7 @@ When you work on this repository and want to consume it from a local consumer pr
 ```bash
 cd /path/to/primeng-cypress
 npm run build:lib   # builds lib/*.js and lib/*.d.ts
-npm link            # registers a global symlink for primeng-cypress
+npm link            # registers a global symlink for @konfidoo/primeng-cypress
 ```
 
 2. In the consuming project: link the package
@@ -98,14 +98,14 @@ npm link            # registers a global symlink for primeng-cypress
 ```bash
 cd /path/to/consumer-project
 # remove any existing installation first to avoid shadowing
-rm -rf node_modules/primeng-cypress
-npm link primeng-cypress
+rm -rf node_modules/@konfidoo/primeng-cypress
+npm link @konfidoo/primeng-cypress
 ```
 
 3. In the consuming project's Cypress support file (runtime registration):
 
 ```ts
-import {registerPrimeNGCommands} from 'primeng-cypress'
+import {registerPrimeNGCommands} from '@konfidoo/primeng-cypress'
 
 registerPrimeNGCommands()
 ```
@@ -135,7 +135,7 @@ npm link
 
   ```json
   "devDependencies": {
-    "primeng-cypress": "file:../path/to/primeng-cypress"
+    "@konfidoo/primeng-cypress": "file:../path/to/primeng-cypress"
   }
   ```
 
@@ -148,31 +148,38 @@ How to add a new PrimeNG command helper
 Follow these steps to add a new helper (example: `pCheckbox`):
 
 1. Implement the core testing logic
-  - Create a core function implementing the checks in `lib/commands/<name>.ts` (example `lib/commands/pCheckbox.ts`).
-  - Keep logic pure and testable: accept a Cypress chainable (or selector) and an options object.
+
+- Create a core function implementing the checks in `lib/commands/<name>.ts` (example `lib/commands/pCheckbox.ts`).
+- Keep logic pure and testable: accept a Cypress chainable (or selector) and an options object.
 
 2. Add TypeScript types
-  - Add interfaces to `lib/commands/types.ts` or a new file `lib/commands/<name>.types.ts` and export them from
-    `lib/commands/index.ts` using `export type` for type-only exports.
+
+- Add interfaces to `lib/commands/types.ts` or a new file `lib/commands/<name>.types.ts` and export them from
+  `lib/commands/index.ts` using `export type` for type-only exports.
 
 3. Add command registration
-  - Add a function to `lib/commands/commands.ts` if needed or update the existing `registerPrimeNGCommands()` to
-    register the new command:
-    - Parent command: `Cypress.Commands.add('pCheckbox', (selector, options) => {...})`
-    - Chainable command: `Cypress.Commands.add('pCheckbox', { prevSubject: 'element' }, (subject, options) => {...})`
+
+- Add a function to `lib/commands/commands.ts` if needed or update the existing `registerPrimeNGCommands()` to
+  register the new command:
+  - Parent command: `Cypress.Commands.add('pCheckbox', (selector, options) => {...})`
+  - Chainable command: `Cypress.Commands.add('pCheckbox', { prevSubject: 'element' }, (subject, options) => {...})`
 
 4. Add typings for the custom command
-  - Update `lib/commands/cypress.d.ts` to include the Chainable augmentation for the new command so editors pick it up.
+
+- Update `lib/commands/cypress.d.ts` to include the Chainable augmentation for the new command so editors pick it up.
 
 5. Export public API
-  - Export any helper functions from `lib/commands/index.ts` so they can be imported from the package root.
+
+- Export any helper functions from `lib/commands/index.ts` so they can be imported from the package root.
 
 6. Add a Cypress spec
-  - Add an example spec in `cypress/<name>.cy.ts` demonstrating the helper in both usage modes (parent and chainable).
-  - Make sure the spec is stable and does not rely on external network resources.
+
+- Add an example spec in `cypress/<name>.cy.ts` demonstrating the helper in both usage modes (parent and chainable).
+- Make sure the spec is stable and does not rely on external network resources.
 
 7. Update docs and README
-  - Add usage examples to `README.md` and mention the new command in the summary.
+
+- Add usage examples to `README.md` and mention the new command in the summary.
 
 8. Run checks
 

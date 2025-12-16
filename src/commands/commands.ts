@@ -17,7 +17,7 @@ declare var cy: any;
  *
  * @example
  * ```typescript
- * import { registerPrimeNGCommands } from 'primeng-cypress';
+ * import { registerPrimeNGCommands } from '@konfidoo/primeng-cypress';
  * registerPrimeNGCommands();
  * ```
  */

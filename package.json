@@ -1,6 +1,16 @@
 {
-  "name": "primeng-cypress",
-  "version": "0.0.0",
+  "name": "@konfidoo/primeng-cypress",
+  "author": "Konfidoo (https://konfidoo.de)",
+  "description": "Provides Cypress test helpers for PrimeNG components ",
+  "homepage": "https://github.com/konfidoo/primeng-cypress",
+  "version": "0.1.0",
+  "keywords": [
+    "primeng",
+    "cypress",
+    "testing",
+    "angular"
+  ],
+  "license": "MIT",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "files": [
@@ -27,7 +37,6 @@
       }
     ]
   },
-  "private": true,
   "packageManager": "npm@10.9.2",
   "dependencies": {
     "@angular/compiler": "^21.0.0",

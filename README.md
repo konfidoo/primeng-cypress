@@ -1,6 +1,6 @@
 # primeng-cypress
 
-[![Pull Request Tests](https://github.com/nblum/primeng-cypress/actions/workflows/ci.yml/badge.svg)](https://github.com/nblum/primeng-cypress/actions/workflows/ci.yml)
+[![Pull Request Tests](https://github.com/konfidoo/primeng-cypress/actions/workflows/ci.yml/badge.svg)](https://github.com/konfidoo/primeng-cypress/actions/workflows/ci.yml)
 
 A lightweight helper library that provides Cypress test helpers for PrimeNG components (examples: `pButton`, `pTabs`,
 `pToggleSwitch`).
@@ -39,13 +39,13 @@ There are multiple ways to consume this helper library from another project:
 Simply install the package from npm:
 
 ```bash
-npm install primeng-cypress --save-dev
+npm install @konfidoo/primeng-cypress --save-dev
 ```
 
 Then in your `cypress/support/commands.ts` (or `cypress/support/e2e.ts`) add:
 
 ```ts
-import {registerPrimeNGCommands} from 'primeng-cypress'
+import {registerPrimeNGCommands} from '@konfidoo/primeng-cypress'
 
 registerPrimeNGCommands()
 ```
@@ -57,7 +57,7 @@ from the package
 root:
 
 ```ts
-import {pButton, pTabs, pToggleSwitch} from 'primeng-cypress'
+import {pButton, pTabs, pToggleSwitch} from '@konfidoo/primeng-cypress'
 ```
 
 ### TypeScript / IDE integration (important)
@@ -66,7 +66,7 @@ To get full TypeScript support and editor autocompletion for the custom commands
 
 - This project exposes the declaration for the Cypress augmentations at `lib/commands/cypress.d.ts` and the package root
   types file `lib/index.d.ts` references it. After installing the package the consumer should have
-  `node_modules/primeng-cypress/lib/commands/cypress.d.ts` available.
+  `node_modules/@konfidoo/primeng-cypress/lib/commands/cypress.d.ts` available.
 
 - If your editor/TS server does not pick up the augmentation automatically, add the following to the consumer's
   `tsconfig.json` `include` (copy/paste):
@@ -75,7 +75,7 @@ To get full TypeScript support and editor autocompletion for the custom commands
   {
     "include": [
       "cypress/**/*.ts",
-      "node_modules/primeng-cypress/lib/**/*.d.ts",
+      "node_modules/@konfidoo/primeng-cypress/lib/**/*.d.ts",
       "...other includes..."
     ]
   }
@@ -88,7 +88,7 @@ To get full TypeScript support and editor autocompletion for the custom commands
     "compilerOptions": {
       "typeRoots": [
         "node_modules/@types",
-        "node_modules/primeng-cypress/lib"
+        "node_modules/@konfidoo/primeng-cypress/lib"
       ]
     }
   }
@@ -100,7 +100,7 @@ To get full TypeScript support and editor autocompletion for the custom commands
 ### Quick troubleshooting (consumer)
 
 - If you see "Property 'pButton' does not exist on type 'Chainable'":
-  1. Ensure `node_modules/primeng-cypress/lib/commands/cypress.d.ts` exists in the consumer project.
+  1. Ensure `node_modules/@konfidoo/primeng-cypress/lib/commands/cypress.d.ts` exists in the consumer project.
   2. Ensure your `tsconfig.json` includes that path (see snippet above).
   3. Restart the TypeScript server.
   4. Ensure you call `registerPrimeNGCommands()` in the Cypress support file so the runtime command exists.
