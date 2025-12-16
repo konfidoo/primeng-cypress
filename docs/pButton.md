@@ -21,13 +21,4 @@ cy.get('#submit-btn').pButton({expectLabel: 'Submit', click: true})
 
 - `expectLabel`: the text to assert is rendered inside the button.
 - `click`: when `true`, the helper clicks the button after validating the label.
-
-## Example test
-
-```typescript
-it('clicks the submit button after verifying its label', () => {
-  cy.mount(`<p-button label="Submit"></p-button>`);
-  cy.get('p-button').pButton({expectLabel: 'Submit', click: true});
-});
-```
-
+- `disabled?: boolean` - asserts the button is disabled (prevents clicking when true).

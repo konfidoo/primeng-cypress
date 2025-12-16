@@ -1,6 +1,8 @@
 # pToggleSwitch
 
-A helper for testing PrimeNG `p-toggleswitch` components in Cypress component tests.
+A helper for testing PrimeNG `p-toggleswitch` components in Cypress component tests. It supports parent and
+chainable forms and detects common render patterns (input, aria attributes, or host classes) to assert state
+and optionally change it.
 
 This helper supports both parent and chainable forms and attempts to detect common PrimeNG render patterns
 (`input[type="checkbox"]`, a clickable `button` with `aria-pressed`, or a host class like `p-toggleswitch-checked`).
@@ -29,24 +31,3 @@ cy.get('#my-toggle').pToggleSwitch({currentValue: false})
   plain toggle action rather than setting a specific target value. `selectValue` wins if both are present.
 - `disabled?: boolean` — Assert the disabled state (checks input/button disabled or `p-disabled` host class).
 - `expectClasses?: string[]` — Assert that host classes are present.
-
-## Examples
-
-- Click to flip state and verify host classes:
-
-```ts
-cy.get('#my-toggle').pToggleSwitch({toggle: true, currentValue: false, expectClasses: ['special']})
-```
-
-- Set a specific value (idempotent):
-
-```ts
-cy.get('#my-toggle').pToggleSwitch({selectValue: true})
-cy.get('#my-toggle').pToggleSwitch({selectValue: false})
-```
-
-- Verify disabled state without clicking:
-
-```ts
-cy.pToggleSwitch('#disabled', {disabled: true})
-```

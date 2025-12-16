@@ -79,32 +79,39 @@ primeng-cypress/
 When adding a new helper (e.g., `pCheckbox`):
 
 1. **Create implementation**: `src/commands/pCheckbox.ts`
-  - Accept selector/chainable and options object
-  - Keep logic pure and testable
+
+- Accept selector/chainable and options object
+- Keep logic pure and testable
 
 2. **Add types**: Update `src/commands/types.ts`
-  - Define option interfaces
-  - Export with `export type` if needed
+
+- Define option interfaces
+- Export with `export type` if needed
 
 3. **Register command**: Update `src/commands/commands.ts`
-  - Add parent command: `Cypress.Commands.add('pCheckbox', ...)`
-  - Add chainable: `Cypress.Commands.add('pCheckbox', { prevSubject: 'element' }, ...)`
+
+- Add parent command: `Cypress.Commands.add('pCheckbox', ...)`
+- Add chainable: `Cypress.Commands.add('pCheckbox', { prevSubject: 'element' }, ...)`
 
 4. **Add TypeScript declarations**: Update `src/commands/cypress.d.ts`
-  - Augment `Cypress.Chainable` interface
-  - Add both parent and chainable signatures
+
+- Augment `Cypress.Chainable` interface
+- Add both parent and chainable signatures
 
 5. **Export from public API**: Update `src/commands/index.ts`
-  - Export helper functions for direct usage
+
+- Export helper functions for direct usage
 
 6. **Add example test**: Create `cypress/pCheckbox.cy.ts`
-  - Demonstrate both parent and chainable usage
-  - Keep tests stable, no external dependencies
-  - Include positive, combined-options, and disabled-state tests (see examples in `pToggleSwitch.cy.ts`)
+
+- Demonstrate both parent and chainable usage
+- Keep tests stable, no external dependencies
+- Include positive, combined-options, and disabled-state tests (see examples in `pToggleSwitch.cy.ts`)
 
 7. **Update documentation**: Update `README.md` and add a `docs/<name>.md`
-  - Add usage examples
-  - Mention in command list
+
+- Add usage examples
+- Mention in command list
 
 8. **Verify changes**:
    ```bash
@@ -144,6 +151,23 @@ When adding a new helper (e.g., `pCheckbox`):
 - Update `README.md` for user-facing changes
 - Update `CONTRIBUTING.md` for contributor workflow changes
 - Keep examples up-to-date with actual code
+
+### Documentation structure
+
+- Every per-command documentation file under `docs/` MUST include the following three sections (recommended as `##`
+  headings):
+  - 1–2 sentence overview describing what the helper does and its purpose.
+  - `## Usage` — short examples showing both the parent command and the chainable form. Use TypeScript code fences and
+    show representative option usage.
+  - `## Options` — a concise list of available options with their types and a one-line explanation (bulleted list
+    preferred; a small table is acceptable for many options).
+- Formatting guidelines for docs:
+  - Use TypeScript code fences for examples: ```ts
+  - Keep lines roughly within the project's print width (~100 chars).
+  - Prefer single quotes and repository style in examples where applicable.
+  - Use clear, short sentences; keep the `Summary` to 1–2 sentences.
+- When adding a new helper, create `docs/<name>.md` with the three sections above and add the helper to the
+  documentation list in this file and `README.md`.
 
 ### Troubleshooting Build Issues
 
