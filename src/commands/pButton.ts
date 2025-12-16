@@ -18,6 +18,11 @@ export function pButtonCore(
 ): Chainable<any> {
   element.as('pButton');
 
+  // Ensure visibility for interactions unless explicitly disabled
+  if (!options?.doNotScroll) {
+    cy.get('@pButton').scrollIntoView();
+  }
+
   cy.get('@pButton').should('match', 'p-button');
   const button = cy.get('@pButton').find('button');
   button.should('exist');

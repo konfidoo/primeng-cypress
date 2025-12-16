@@ -22,6 +22,11 @@ export function pConfirmDialogCore(
 ): Chainable<any> | undefined {
   element.as('pConfirmDialog');
 
+  // Ensure visibility unless explicitly disabled
+  if (!options?.doNotScroll) {
+    cy.get(DEFAULT_SELECTOR).scrollIntoView();
+  }
+
   cy.get(DEFAULT_SELECTOR).should('be.visible');
 
   if (options.expectedTitle) {
@@ -59,4 +64,3 @@ export function pConfirmDialog(
 
   return pConfirmDialogCore(el, options);
 }
-

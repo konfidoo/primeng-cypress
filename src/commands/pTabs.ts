@@ -20,6 +20,11 @@ export function pTabsCore(
   // give the element an alias for easier reference
   element.as('pTabs');
 
+  // Ensure visibility unless explicitly disabled
+  if (!options?.doNotScroll) {
+    cy.get('@pTabs').scrollIntoView();
+  }
+
   // Verify the element is a P-TABS element
   cy.get('@pTabs').should('match', 'p-tabs');
   cy.get('@pTabs').find('p-tabpanels').should('exist');

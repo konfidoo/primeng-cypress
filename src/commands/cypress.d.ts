@@ -1,4 +1,4 @@
-import {PButtonOptions, PCheckboxOptions, PConfirmDialogOptions, PTabsOptions, PToggleSwitchOptions} from './types';
+import {PButtonOptions, PCheckboxOptions, PConfirmDialogOptions, PTabsOptions, PToggleSwitchOptions, PPanelOptions} from './types';
 
 declare global {
   namespace Cypress {
@@ -98,6 +98,21 @@ declare global {
       pConfirmDialog(options?: PConfirmDialogOptions): Chainable<JQuery<HTMLElement>>;
 
       pConfirmDialog(selector: string, options?: PConfirmDialogOptions): Chainable<JQuery<HTMLElement>>;
+
+      /**
+       * Test helper for PrimeNG Panel component (p-panel)
+       *
+       * Supports parent and chainable forms. Defaults to selecting the first `p-panel`.
+       *
+       * @example
+       * ```typescript
+       * cy.pPanel('#my-panel', { isCollapsed: true });
+       * cy.get('p-panel').pPanel({ toggle: true });
+       * ```
+       */
+      pPanel(selector: string, options?: PPanelOptions): Chainable<JQuery<HTMLElement>>;
+
+      pPanel(options?: PPanelOptions): Chainable<JQuery<HTMLElement>>;
     }
   }
 }

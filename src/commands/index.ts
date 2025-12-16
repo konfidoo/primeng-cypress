@@ -11,7 +11,8 @@ export {pTabs} from './pTabs';
 export {pToggleSwitch} from './pToggleSwitch';
 export {pCheckbox} from './pCheckbox';
 export {pConfirmDialog} from './pConfirmDialog';
+export {pPanel} from './pPanel';
 export type {
-  PButtonOptions, PTabsOptions, PToggleSwitchOptions, PCheckboxOptions, PConfirmDialogOptions
+  PButtonOptions, PTabsOptions, PToggleSwitchOptions, PCheckboxOptions, PConfirmDialogOptions, PPanelOptions
 } from './types';
 export {registerPrimeNGCommands} from './commands';

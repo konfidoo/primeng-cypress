@@ -15,6 +15,11 @@ export function pCheckboxCore(
 ): Chainable<any> {
   element.as('pCheckbox');
 
+  // Ensure element is visible unless explicitly disabled
+  if (!options?.doNotScroll) {
+    cy.get('@pCheckbox').scrollIntoView();
+  }
+
   // Verify host element
   cy.get('@pCheckbox').should('have.prop', 'nodeName').and('match', /^P-CHECKBOX$/);
 
