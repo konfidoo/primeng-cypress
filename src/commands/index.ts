@@ -13,6 +13,7 @@ export {pCheckbox} from './pCheckbox';
 export {pConfirmDialog} from './pConfirmDialog';
 export {pPanel} from './pPanel';
 export {pSelect} from './pSelect';
+export {pMultiSelect} from './pMultiSelect';
 export type {
   PButtonOptions,
   PTabsOptions,
@@ -20,6 +21,7 @@ export type {
   PCheckboxOptions,
   PConfirmDialogOptions,
   PPanelOptions,
-  PSelectOptions
+  PSelectOptions,
+  PMultiSelectOptions
 } from './types';
 export {registerPrimeNGCommands} from './commands';

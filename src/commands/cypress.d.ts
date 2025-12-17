@@ -2,6 +2,7 @@ import {
   PButtonOptions,
   PCheckboxOptions,
   PConfirmDialogOptions,
+  PMultiSelectOptions,
   PPanelOptions,
   PSelectOptions,
   PTabsOptions,
@@ -135,7 +136,20 @@ declare global {
        */
       pSelect(selector: string, options?: PSelectOptions): Chainable<JQuery<HTMLElement>>;
 
-      pSelect(options?: PSelectOptions): Chainable<JQuery<HTMLElement>>;
+      pSelect(options?: PSelectOptions): Chainable<Subject>;
+
+      /**
+       * Helper for PrimeNG MultiSelect component
+       */
+      pMultiSelect(options?: PMultiSelectOptions): Chainable<Subject>;
+
+      /**
+       * Parent command for PrimeNG MultiSelect component
+       */
+      pMultiSelect(
+        selector?: string | Chainable<any>,
+        options?: PMultiSelectOptions
+      ): Chainable<JQuery<HTMLElement>>;
     }
   }
 }

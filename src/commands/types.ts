@@ -198,3 +198,47 @@ export interface PSelectOptions extends GeneralElementOptions {
    */
   isDisabled?: boolean;
 }
+
+/**
+ * Options for testing PrimeNG multi-select component
+ */
+export interface PMultiSelectOptions extends GeneralElementOptions {
+  /**
+   * Expected currently selected values (labels or attribute values depending on selectBy)
+   */
+  currentValues?: string[];
+
+  /**
+   * Values to select in the multiselect. Interpreted according to `selectBy`.
+   */
+  selectValues?: string[];
+
+  /**
+   * Expected number of options in the overlay panel
+   */
+  expectedOptionCount?: number;
+
+  /**
+   * Determines how to select options: use 'label' (the default) to match by visible label text,
+   * or provide a custom attribute name (such as 'id' or 'data-optionId') to match against that
+   * attribute on option elements. Any string other than 'label' is treated as a custom attribute name.
+   */
+  selectBy?: 'label' | string;
+
+  /**
+   * If true, the multi-select overlay will remain open after selecting values instead of being
+   * closed by a blur-click on the body.
+   */
+  keepOpen?: boolean;
+
+  /**
+   * When true, the helper will try to clear existing selections by clicking the clear icon
+   * (requires the component to be configured with [showClear]="true").
+   */
+  clearValues?: boolean;
+
+  /**
+   * When true, assert the host is disabled and do not attempt to open the overlay or click options.
+   */
+  isDisabled?: boolean;
+}
