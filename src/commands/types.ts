@@ -232,6 +232,12 @@ export interface PMultiSelectOptions extends GeneralElementOptions {
   keepOpen?: boolean;
 
   /**
+   * When true, the multi-select overlay will be closed by clicking outside (blur) after selections
+   * are made. Default behaviour to close it by click on select element itself.
+   */
+  closeByBlur?: boolean;
+
+  /**
    * When true, the helper will try to clear existing selections by clicking the clear icon
    * (requires the component to be configured with [showClear]="true").
    */
