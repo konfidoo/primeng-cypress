@@ -1,10 +1,10 @@
-// filepath: /home/nico-blum/projects/primeng-cypress/lib/commands/commands.ts
 // Register Cypress commands for PrimeNG components
 
 import {
   PButtonOptions,
   PCheckboxOptions,
   PConfirmDialogOptions,
+  PMultiSelectOptions,
   PPanelOptions,
   PSelectOptions,
   PTabsOptions,
@@ -17,6 +17,7 @@ import {pCheckboxCore} from './pCheckbox';
 import {pConfirmDialogCore} from './pConfirmDialog';
 import {pPanelCore} from './pPanel';
 import {pSelectCore} from './pSelect';
+import {pMultiSelectCore} from './pMultiSelect';
 
 // Declare global Cypress and cy for runtime access
 declare var Cypress: any;
@@ -163,6 +164,24 @@ export function registerPrimeNGCommands(): void {
           : cy.get('p-select');
 
       return pSelectCore(selectChainable, resolvedOptions);
+    }
+  );
+
+  // Add cy.pMultiSelect() command (supports optional prevSubject)
+  Cypress.Commands.add(
+    'pMultiSelect',
+    {prevSubject: 'optional'},
+    (subject: any, selectorOrOptions?: string | PMultiSelectOptions, options?: PMultiSelectOptions) => {
+      const selector = typeof selectorOrOptions === 'string' ? selectorOrOptions : undefined;
+      const resolvedOptions = typeof selectorOrOptions === 'string' ? options : selectorOrOptions;
+
+      const multiSelectChainable = subject
+        ? cy.wrap(subject)
+        : selector
+          ? cy.get(selector)
+          : cy.get('p-multiselect');
+
+      return pMultiSelectCore(multiSelectChainable, resolvedOptions);
     }
   );
 }

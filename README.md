@@ -18,6 +18,7 @@ locally during development or as an installed dependency).
 - [pButton](docs/pButton.md)
 - [pCheckbox](docs/pCheckbox.md)
 - [pConfirmDialog](docs/pConfirmDialog.md)
+- [pMultiSelect](docs/pMultiSelect.md)
 - [pPanel](docs/pPanel.md)
 - [pSelect](docs/pSelect.md)
 - [pTabs](docs/pTabs.md)
