@@ -15,6 +15,7 @@ locally during development or as an installed dependency).
 
 ## Supported components
 
+- [pAccordion](docs/pAccordion.md)
 - [pButton](docs/pButton.md)
 - [pCheckbox](docs/pCheckbox.md)
 - [pConfirmDialog](docs/pConfirmDialog.md)

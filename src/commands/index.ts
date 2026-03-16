@@ -6,6 +6,7 @@
 
 /// <reference path="./cypress.d.ts" />
 
+export {pAccordion} from './pAccordion';
 export {pButton} from './pButton';
 export {pTabs} from './pTabs';
 export {pToggleSwitch} from './pToggleSwitch';
@@ -15,6 +16,7 @@ export {pPanel} from './pPanel';
 export {pSelect} from './pSelect';
 export {pMultiSelect} from './pMultiSelect';
 export type {
+  PAccordionOptions,
   PButtonOptions,
   PTabsOptions,
   PToggleSwitchOptions,
