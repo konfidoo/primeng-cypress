@@ -1,6 +1,7 @@
 // Register Cypress commands for PrimeNG components
 
 import {
+  PAccordionOptions,
   PButtonOptions,
   PCheckboxOptions,
   PConfirmDialogOptions,
@@ -10,6 +11,7 @@ import {
   PTabsOptions,
   PToggleSwitchOptions
 } from './types';
+import {pAccordionCore} from './pAccordion';
 import {pButtonCore} from './pButton';
 import {pTabsCore} from './pTabs';
 import {pToggleSwitchCore} from './pToggleSwitch';
@@ -39,6 +41,24 @@ export function registerPrimeNGCommands(): void {
   if (typeof Cypress === 'undefined' || typeof cy === 'undefined') {
     throw new Error('Cypress is not available. Make sure to call this function in a Cypress environment.');
   }
+
+  // Add cy.pAccordion() command (supports optional selector and prevSubject)
+  Cypress.Commands.add(
+    'pAccordion',
+    {prevSubject: 'optional'},
+    (subject: any, selectorOrOptions?: string | PAccordionOptions, options?: PAccordionOptions) => {
+      const selector = typeof selectorOrOptions === 'string' ? selectorOrOptions : undefined;
+      const resolvedOptions = typeof selectorOrOptions === 'string' ? options : selectorOrOptions;
+
+      const accordionChainable = subject
+        ? cy.wrap(subject)
+        : selector
+          ? cy.get(selector)
+          : cy.get('p-accordion');
+
+      return pAccordionCore(accordionChainable, resolvedOptions);
+    }
+  );
 
   // Add cy.pButton() command (supports optional selector and prevSubject)
   Cypress.Commands.add(

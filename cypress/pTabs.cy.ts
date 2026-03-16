@@ -143,4 +143,17 @@ describe('pTabs.cy.ts', () => {
 
     cy.contains('Content for Tab 3').should('be.visible');
   });
+
+  it('uses the first matched tabs host when the selector resolves multiple elements', () => {
+    @Component({
+      imports: IMPORTS,
+      template: `${TABS_TEMPLATE}${TABS_TEMPLATE}`,
+    })
+    class TestHostComponent {
+    }
+
+    (cy as any).mount(TestHostComponent);
+
+    cy.pTabs('p-tabs', {expectedTabCount: 3, activeTab: 'Header I'});
+  });
 });

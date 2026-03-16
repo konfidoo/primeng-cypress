@@ -73,7 +73,10 @@ export function pSelectCore(
   const overlaySelector = '.p-select-overlay';
   const optionSelector = '.p-select-option';
 
-  // wait for overlay
+  // wait for overlay — PrimeNG animates the overlay wrapper (ng-animating / opacity:0),
+  // so check existence first, then wait for the animation to finish before asserting visibility
+  cy.get(overlaySelector).should('exist');
+  cy.get(overlaySelector).parent().should('not.have.class', 'ng-animating');
   cy.get(overlaySelector).should('be.visible');
 
   // expected option count
@@ -116,6 +119,12 @@ export function pSelectCore(
           cy.get(overlaySelector).find(`[${attrName}="${opts.selectValue}"]`).click();
         }
       });
+  }
+
+  // wait for XHR requests triggered by the selection
+  if (opts.waitFor !== undefined) {
+    const aliases = Array.isArray(opts.waitFor) ? opts.waitFor : [opts.waitFor];
+    aliases.forEach((alias: string) => cy.wait(alias));
   }
 
   // post-selection validation

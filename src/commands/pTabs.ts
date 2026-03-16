@@ -17,8 +17,11 @@ export function pTabsCore(
   element: Chainable<any>,
   options: PTabsOptions = {}
 ): Chainable<any> {
+  // Normalize to a single host element so helper actions stay deterministic.
+  const host = element.first();
+
   // give the element an alias for easier reference
-  element.as('pTabs');
+  host.as('pTabs');
 
   // Ensure visibility unless explicitly disabled
   if (!options?.doNotScroll) {
@@ -56,7 +59,7 @@ export function pTabsCore(
     tab.should('have.class', 'p-tab-active');
   }
 
-  return element;
+  return host;
 }
 
 /**

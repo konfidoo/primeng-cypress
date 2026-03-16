@@ -194,9 +194,37 @@ export interface PSelectOptions extends GeneralElementOptions {
   skipValidation?: boolean;
 
   /**
+   * One or more `cy.intercept` aliases to wait for after clicking an option.
+   * Use this when selecting a value triggers XHR requests that must complete before
+   * subsequent assertions (e.g. `waitFor: '@getFormConfig'`).
+   */
+  waitFor?: string | string[];
+
+  /**
    * When true, assert the host is disabled and do not attempt to open the overlay or click options.
    */
   isDisabled?: boolean;
+}
+
+/**
+ * Options for testing PrimeNG Accordion component
+ */
+export interface PAccordionOptions extends GeneralElementOptions {
+  /**
+   * Assert the panel with this header text is currently active/expanded
+   */
+  activePanel?: string;
+
+  /**
+   * Open a panel by clicking its header (matched by visible header text).
+   * After clicking, the panel's active state is verified.
+   */
+  openPanel?: string;
+
+  /**
+   * Expected number of accordion panels
+   */
+  expectedPanelCount?: number;
 }
 
 /**

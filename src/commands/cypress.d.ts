@@ -1,4 +1,5 @@
 import {
+  PAccordionOptions,
   PButtonOptions,
   PCheckboxOptions,
   PConfirmDialogOptions,
@@ -12,6 +13,21 @@ import {
 declare global {
   namespace Cypress {
     interface Chainable<Subject = any> {
+      /**
+       * Test helper for PrimeNG Accordion component (p-accordion)
+       *
+       * Supports parent and chainable forms. Defaults to selecting the first `p-accordion`.
+       *
+       * @example
+       * ```typescript
+       * cy.pAccordion('#faq', { openPanel: 'Section 1', expectedPanelCount: 3 });
+       * cy.get('p-accordion').pAccordion({ activePanel: 'Section 2' });
+       * ```
+       */
+      pAccordion(selector: string, options?: PAccordionOptions): Chainable<JQuery<HTMLElement>>;
+
+      pAccordion(options?: PAccordionOptions): Chainable<JQuery<HTMLElement>>;
+
       /**
        * Test helper for PrimeNG Button component (p-button)
        *
@@ -132,6 +148,7 @@ declare global {
        * ```ts
        * cy.pSelect('#country', { selectValue: 'Germany', selectBy: 'label' });
        * cy.get('p-select').pSelect({ selectValue: 'country_2', selectBy: 'id' });
+       * cy.pSelect('#country', { selectValue: 'Germany', waitFor: '@getFormConfig' });
        * ```
        */
       pSelect(selector: string, options?: PSelectOptions): Chainable<JQuery<HTMLElement>>;
