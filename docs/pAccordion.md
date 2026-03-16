@@ -1,4 +1,4 @@
-Summary
+# pAccordion
 
 A small helper to test PrimeNG `p-accordion` components. It validates the host element, optional panel count, currently
 active panel header text, and can open a panel by clicking its header.
