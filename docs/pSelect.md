@@ -21,7 +21,7 @@ cy.get('p-select').pSelect({selectValue: 'country_2', selectBy: 'id'});
 - `expectedOptions?: string[]` — expected option labels (order-sensitive when provided).
 - `skipValidation?: boolean` — when true, do not validate the selected value after clicking (useful when the host label
   is not stable).
-- `waitForOverlayAnimation?: boolean` — when true, also wait until the overlay wrapper no longer has PrimeNG's
-  `ng-animating` class before asserting visibility. This is opt-in and disabled by default.
+- `waitForOverlayAnimation?: boolean` — when true, wait until the overlay wrapper no longer has PrimeNG's
+  `ng-animating` class and the overlay becomes visible. This is opt-in and disabled by default.
 - `isDisabled?: boolean` — when true, assert the host is disabled and do not attempt to open the overlay or click
   options.

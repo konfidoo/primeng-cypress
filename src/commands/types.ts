@@ -202,7 +202,7 @@ export interface PSelectOptions extends GeneralElementOptions {
 
   /**
    * When true, wait until the overlay wrapper no longer has PrimeNG's `ng-animating`
-   * class before asserting the overlay is visible. Disabled by default so existing
+   * class and the overlay becomes visible. Disabled by default so existing
    * tests can opt in only when they need to synchronize with the opening animation.
    */
   waitForOverlayAnimation?: boolean;

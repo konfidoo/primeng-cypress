@@ -74,13 +74,13 @@ export function pSelectCore(
   const optionSelector = '.p-select-option';
 
   // Wait for the overlay to exist. Animation-state waiting is opt-in because the default
-  // assertion against `.ng-animating` can interfere with tests that use pSelect in already
-  // synchronized flows.
+  // assertions against PrimeNG's opening animation can interfere with tests that use pSelect
+  // in already synchronized flows.
   cy.get(overlaySelector).should('exist');
   if (opts.waitForOverlayAnimation) {
     cy.get(overlaySelector).parent().should('not.have.class', 'ng-animating');
+    cy.get(overlaySelector).should('be.visible');
   }
-  cy.get(overlaySelector).should('be.visible');
 
   // expected option count
   if (opts.expectedOptionCount !== undefined) {
