@@ -156,6 +156,28 @@ describe('pSelect.cy.ts', () => {
     cy.get('#sel3').pSelect({selectValue: 'B'})
   })
 
+  it('waits for the overlay animation only when explicitly requested', () => {
+    @Component({
+      imports: [SelectModule, FormsModule],
+      template: `
+        <p-select id="sel8" [(ngModel)]="value" [options]="options" appendTo="body"></p-select>
+      `
+    })
+    class TestHostComponent {
+      value = null
+      options = [
+        {label: 'A', value: 'a'},
+        {label: 'B', value: 'b'},
+        {label: 'C', value: 'c'}
+      ]
+    }
+
+    ;(cy as any).mount(TestHostComponent, {imports: [SelectModule, FormsModule]})
+
+    cy.get('#sel8').pSelect({selectValue: 'C', waitForOverlayAnimation: true})
+    cy.get('#sel8').pSelect({currentValue: 'C'})
+  })
+
   it('respects isDisabled option and does not open overlay when disabled', () => {
     @Component({
       imports: [SelectModule, FormsModule],
