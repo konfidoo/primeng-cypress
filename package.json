@@ -1,9 +1,9 @@
 {
-  "name": "@konfidoo/primeng-cypress",
+  "name": "@konfidoo2/primeng-cypress",
   "author": "Konfidoo (https://konfidoo.de)",
   "description": "Provides Cypress test helpers for PrimeNG components ",
   "homepage": "https://github.com/konfidoo/primeng-cypress",
-  "version": "0.7.0",
+  "version": "1.0.0",
   "keywords": [
     "primeng",
     "cypress",
