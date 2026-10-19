@@ -52,13 +52,13 @@ There are multiple ways to consume this helper library from another project:
 Simply install the package from npm:
 
 ```bash
-npm install @konfidoo/primeng-cypress --save-dev
+npm install @konfidoo2/primeng-cypress --save-dev
 ```
 
 Then in your `cypress/support/commands.ts` (or `cypress/support/e2e.ts`) add:
 
 ```ts
-import {registerPrimeNGCommands} from '@konfidoo/primeng-cypress'
+import {registerPrimeNGCommands} from '@konfidoo2/primeng-cypress'
 
 registerPrimeNGCommands()
 ```
@@ -70,7 +70,7 @@ from the package
 root:
 
 ```ts
-import {pButton} from '@konfidoo/primeng-cypress'
+import {pButton} from '@konfidoo2/primeng-cypress'
 ```
 
 ### TypeScript / IDE integration (important)
@@ -79,7 +79,7 @@ To get full TypeScript support and editor autocompletion for the custom commands
 
 - This project exposes the declaration for the Cypress augmentations at `lib/commands/cypress.d.ts` and the package root
   types file `lib/index.d.ts` references it. After installing the package the consumer should have
-  `node_modules/@konfidoo/primeng-cypress/lib/commands/cypress.d.ts` available.
+  `node_modules/@konfidoo2/primeng-cypress/lib/commands/cypress.d.ts` available.
 
 - If your editor/TS server does not pick up the augmentation automatically, add the following to the consumer's
   `tsconfig.json` `include` (copy/paste):
@@ -88,7 +88,7 @@ To get full TypeScript support and editor autocompletion for the custom commands
   {
     "include": [
       "cypress/**/*.ts",
-      "node_modules/@konfidoo/primeng-cypress/lib/**/*.d.ts",
+      "node_modules/@konfidoo2/primeng-cypress/lib/**/*.d.ts",
       "...other includes..."
     ]
   }
@@ -101,7 +101,7 @@ To get full TypeScript support and editor autocompletion for the custom commands
     "compilerOptions": {
       "typeRoots": [
         "node_modules/@types",
-        "node_modules/@konfidoo/primeng-cypress/lib"
+        "node_modules/@konfidoo2/primeng-cypress/lib"
       ]
     }
   }
@@ -113,7 +113,7 @@ To get full TypeScript support and editor autocompletion for the custom commands
 ### Quick troubleshooting (consumer)
 
 - If you see "Property 'pButton' does not exist on type 'Chainable'":
-  1. Ensure `node_modules/@konfidoo/primeng-cypress/lib/commands/cypress.d.ts` exists in the consumer project.
+  1. Ensure `node_modules/@konfidoo2/primeng-cypress/lib/commands/cypress.d.ts` exists in the consumer project.
   2. Ensure your `tsconfig.json` includes that path (see snippet above).
   3. Restart the TypeScript server.
   4. Ensure you call `registerPrimeNGCommands()` in the Cypress support file so the runtime command exists.
