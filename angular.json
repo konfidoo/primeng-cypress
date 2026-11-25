@@ -16,14 +16,9 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
-            "browser": "src/main.ts",
+            "browser": "cypress/fixtures/app/main.ts",
+            "index": "cypress/fixtures/app/index.html",
             "tsConfig": "tsconfig.app.json",
-            "assets": [
-              {
-                "glob": "**/*",
-                "input": "public"
-              }
-            ],
             "styles": [
               "src/styles.css"
             ]
@@ -33,8 +28,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
+                "maximumWarning": "900kB",
+                "maximumError": "1MB"
                 },
                 {
                   "type": "anyComponentStyle",

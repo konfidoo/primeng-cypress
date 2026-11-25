@@ -17,7 +17,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
           cache: 'npm'
 
       - name: Install dependencies
@@ -29,9 +29,5 @@ jobs:
       - name: Build library
         run: npm run build:lib
 
-      - name: Run Cypress component tests
-        uses: cypress-io/github-action@v5
-        with:
-          command: npm test
-        env:
-          CI: true
+      - name: Run Cypress component and E2E tests
+        run: npm test

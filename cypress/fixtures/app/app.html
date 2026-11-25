@@ -1,0 +1,102 @@
+<main>
+  <h1>PrimeNG Cypress fixtures</h1>
+
+  <section>
+    <h2>Accordion</h2>
+    <p-accordion id="accordion" value="summary">
+      <p-accordion-panel value="summary">
+        <p-accordion-header>Summary</p-accordion-header>
+        <p-accordion-content><p>Summary content</p></p-accordion-content>
+      </p-accordion-panel>
+      <p-accordion-panel value="details">
+        <p-accordion-header>Details</p-accordion-header>
+        <p-accordion-content><p>Accordion details</p></p-accordion-content>
+      </p-accordion-panel>
+    </p-accordion>
+  </section>
+
+  <section>
+    <h2>Button</h2>
+    <p-button id="counter" label="Increment" (onClick)="clicks.update(value => value + 1)" />
+    <p-button id="disabled-button" label="Unavailable" [disabled]="true" />
+    <output id="click-count">{{ clicks() }}</output>
+  </section>
+
+  <section>
+    <h2>Checkbox</h2>
+    <p-checkbox id="checkbox" inputId="terms" [(ngModel)]="checked" [binary]="true" />
+    <label for="terms">Accept terms</label>
+    <output id="checkbox-value">{{ checked() }}</output>
+  </section>
+
+  <section>
+    <h2>ConfirmDialog</h2>
+    <p-confirmdialog key="archive" styleClass="archive-dialog" appendTo="body" />
+    <p-confirmdialog key="delete" styleClass="delete-dialog" appendTo="body" />
+    <p-button id="confirm" label="Review deletion" (onClick)="confirm()" />
+    <p-button id="confirm-both" label="Review archive and deletion" (onClick)="confirmBoth()" />
+    <output id="decision">{{ decision() }}</output>
+    <output id="archive-decision">{{ archiveDecision() }}</output>
+  </section>
+
+  <section>
+    <h2>MultiSelect</h2>
+    <p-multiselect
+      id="multiselect"
+      ariaLabel="Countries"
+      [(ngModel)]="countriesSelected"
+      [options]="countries"
+      [showClear]="true"
+      appendTo="body"
+    />
+    <output id="multiselect-value">{{ countriesSelected()?.join(',') }}</output>
+    <p-multiselect
+      id="backup-multiselect"
+      ariaLabel="Backup countries"
+      [(ngModel)]="backupCountriesSelected"
+      [options]="countries"
+      appendTo="body"
+    />
+    <output id="backup-multiselect-value">{{ backupCountriesSelected().join(',') }}</output>
+  </section>
+
+  <section>
+    <h2>Panel</h2>
+    <p-panel id="panel" header="Panel heading" [toggleable]="true">
+      <p>Panel details</p>
+    </p-panel>
+  </section>
+
+  <section>
+    <h2>Select</h2>
+    <p-select
+      id="select"
+      ariaLabel="Country"
+      [(ngModel)]="country"
+      [options]="countries"
+      appendTo="body"
+    />
+    <output id="select-value">{{ country() }}</output>
+  </section>
+
+  <section>
+    <h2>Tabs</h2>
+    <p-tabs value="summary">
+      <p-tablist>
+        <p-tab value="summary">Tab summary</p-tab>
+        <p-tab value="details">Tab details</p-tab>
+      </p-tablist>
+      <p-tabpanels>
+        <p-tabpanel value="summary">Summary tab content</p-tabpanel>
+        <p-tabpanel value="details">Details tab content</p-tabpanel>
+      </p-tabpanels>
+    </p-tabs>
+  </section>
+
+  <section>
+    <h2>ToggleSwitch</h2>
+    <p-toggleswitch id="switch" inputId="notifications" [(ngModel)]="enabled" />
+    <label for="notifications">Notifications</label>
+    <output id="switch-value">{{ enabled() }}</output>
+  </section>
+</main>

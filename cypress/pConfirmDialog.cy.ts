@@ -5,12 +5,12 @@ import {ConfirmationService} from 'primeng/api';
 
 describe('pConfirmDialog.cy.ts', () => {
 
-  it('validates title and message and accepts', () => {
+  it('validates the title and message', () => {
     @Component({
       imports: [ConfirmDialogModule, ButtonModule],
       providers: [ConfirmationService],
       template: `
-        <p-confirmDialog></p-confirmDialog>
+        <p-confirmdialog></p-confirmdialog>
       `
     })
     class TestHostComponent implements OnInit {
@@ -33,7 +33,7 @@ describe('pConfirmDialog.cy.ts', () => {
       imports: [ConfirmDialogModule, ButtonModule],
       providers: [ConfirmationService],
       template: `
-        <p-confirmDialog></p-confirmDialog>
+        <p-confirmdialog></p-confirmdialog>
         @if (rejected) {
           <div id="rejected">Rejected</div>
         }

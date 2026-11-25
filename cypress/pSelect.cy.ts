@@ -2,6 +2,38 @@ import {Component} from '@angular/core'
 import {SelectModule} from 'primeng/select'
 import {FormsModule} from '@angular/forms'
 
+@Component({
+  imports: [SelectModule, FormsModule],
+  template: `
+    <p-select
+      id="options-select"
+      [(ngModel)]="country"
+      [options]="countries"
+      (onShow)="openCount = openCount + 1"
+      (ngModelChange)="loadCountry($event)"
+      appendTo="body"
+    />
+    <output id="selected-country">{{ country }}</output>
+    <output id="select-open-count">{{ openCount }}</output>
+  `,
+})
+class OptionsSelectComponent {
+  country = 'de';
+  openCount = 0;
+  requestPaths: string[] = [];
+  readonly countries = [
+    {label: 'Germany', value: 'de'},
+    {label: 'France', value: 'fr'},
+    {label: 'Spain', value: 'es'},
+  ];
+
+  protected loadCountry(country: string): void {
+    for (const path of this.requestPaths) {
+      void fetch(`${path}?country=${country}`);
+    }
+  }
+}
+
 describe('pSelect.cy.ts', () => {
   it('validates currentValue and selects by label', () => {
     @Component({
@@ -59,12 +91,87 @@ describe('pSelect.cy.ts', () => {
 
     ;(cy as any).mount(TestHostComponent, {imports: [SelectModule, FormsModule]})
 
-    cy.get('#sel2').pSelect({expectedOptionCount: 3, expectedOptions: ['One', 'Two', 'Three']})
-
-    // select by attribute data-optionId
-    cy.get('#sel2').pSelect({selectValue: 'id2', selectBy: 'data-optionId'})
+    cy.get('#sel2').pSelect({
+      expectedOptionCount: 3,
+      expectedOptions: ['One', 'Two', 'Three'],
+      selectValue: 'id2',
+      selectBy: 'data-optionId',
+    });
     cy.get('#sel2').pSelect({currentValue: 'Two'})
   })
+
+  it('inspects options without selecting and restores the previous overlay state', () => {
+    cy.mount(OptionsSelectComponent);
+
+    cy.pSelect('#options-select', {expectedOptionCount: 3, expectedOptions: ['Germany', 'France', 'Spain']});
+    cy.get('#select-open-count').should('have.text', '1');
+    cy.get('#selected-country').should('have.text', 'de');
+    cy.get('.p-select-overlay').should('not.exist');
+
+    cy.get('#options-select [role="combobox"]').click();
+    cy.get('#options-select').pSelect({expectedOptions: ['Germany', 'France']});
+    cy.get('.p-select-overlay').should('be.visible');
+    cy.get('#select-open-count').should('have.text', '2');
+    cy.get('#selected-country').should('have.text', 'de');
+  });
+
+  it('rejects out-of-order options without selecting', {defaultCommandTimeout: 1500}, () => {
+    cy.mount(OptionsSelectComponent);
+
+    cy.on('fail', (error: Error) => {
+      expect(error.message).to.include("contain text 'France'");
+      return false;
+    });
+
+    cy.get('#options-select').pSelect({expectedOptions: ['France', 'Germany', 'Spain']}).then(() => {
+      throw new Error('The helper accepted out-of-order options');
+    });
+  });
+
+  it('rejects an incorrect option count without selecting', {defaultCommandTimeout: 1500}, () => {
+    cy.mount(OptionsSelectComponent);
+
+    cy.on('fail', (error: Error) => {
+      expect(error.message).to.include("Found '3', expected '2'");
+      return false;
+    });
+
+    cy.get('#options-select').pSelect({expectedOptionCount: 2}).then(() => {
+      throw new Error('The helper accepted the wrong option count');
+    });
+  });
+
+  for (const aliases of [['country'], ['country', 'region']]) {
+    const usesAliasArray = aliases.length > 1;
+    it(`waits for ${usesAliasArray ? 'all request aliases' : 'a single request alias'}`, () => {
+      const paths = aliases.map((alias) => `/select-options/${alias}`);
+      const completed = new Set<string>();
+
+      aliases.forEach((alias, index) => {
+        cy.intercept(
+          {method: 'GET', pathname: paths[index], query: {country: 'fr'}},
+          (request) => {
+            request.on('after:response', () => {
+              completed.add(alias);
+            });
+            request.reply({delay: 1000 + index * 400, body: {}});
+          }
+        ).as(alias);
+      });
+
+      cy.mount(OptionsSelectComponent).then(({component}) => {
+        component.requestPaths = paths;
+      });
+      const waitAliases = aliases.map((alias) => `@${alias}`);
+      cy.pSelect('#options-select', {
+        selectValue: 'France',
+        skipValidation: true,
+        waitFor: usesAliasArray ? waitAliases : waitAliases[0],
+      }).then(() => {
+        expect([...completed]).to.have.members(aliases);
+      });
+    });
+  }
 
   it('supports skipValidation when overlay removes the host', () => {
     @Component({

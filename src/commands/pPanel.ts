@@ -5,6 +5,11 @@ import Chainable = Cypress.Chainable;
 
 declare var cy: any;
 
+const contentSelector = '.p-panel-content-container';
+const toggleSelector = 'button.p-panel-toggle-button, p-button[aria-expanded] button';
+const isCollapsed = ($content: JQuery<HTMLElement>): boolean =>
+  $content.attr('aria-hidden') === 'true';
+
 /**
  * Core logic for testing PrimeNG Panel component (p-panel)
  *
@@ -40,50 +45,28 @@ export function pPanelCore(
     }
   }
 
-  // Check collapsed/expanded state when explicitly requested
+  // PrimeNG 21 can omit aria-hidden on an initially expanded panel.
+  const content = () => cy.get('@pPanel').children(contentSelector).should('exist');
+  const expectCollapsed = (collapsed: boolean) =>
+    content().should(($content: JQuery<HTMLElement>) => {
+      expect(isCollapsed($content), 'panel collapsed').to.equal(collapsed);
+    });
   if (options.isCollapsed !== undefined) {
-    if (options.isCollapsed) {
-      cy.get('@pPanel').should('have.class', 'p-panel-collapsed');
-    } else {
-      cy.get('@pPanel').should('have.class', 'p-panel-expanded');
-    }
+    expectCollapsed(options.isCollapsed);
   }
 
-
-  // setState takes precedence: force expanded or collapsed regardless of current state
-  if (options.setState !== undefined) {
-    cy.get('@pPanel').then(($el: any) => {
-      const isCurrentlyCollapsed = $el.hasClass('p-panel-collapsed');
-      if (options.setState === 'expanded' && isCurrentlyCollapsed) {
-        // click header button to expand
-        cy.wrap($el).find('.p-panel-header').find('p-button').pButton({click: true});
-        cy.wrap($el).should('have.class', 'p-panel-expanded');
-        if (!options?.doNotScroll) {
-          cy.wrap($el).find('.p-panel-content-container').scrollIntoView();
-        }
-      } else if (options.setState === 'collapsed' && !isCurrentlyCollapsed) {
-        // click header button to collapse
-        cy.wrap($el).find('.p-panel-header').find('p-button').pButton({click: true});
-        cy.wrap($el).should('have.class', 'p-panel-collapsed');
+  if (options.setState !== undefined || options.toggle === true) {
+    content().then(($content: JQuery<HTMLElement>) => {
+      const collapsed = isCollapsed($content);
+      const target = options.setState === undefined ? !collapsed : options.setState === 'collapsed';
+      if (collapsed === target) {
+        return;
       }
-    });
 
-    // finished handling setState
-    if (!options?.doNotScroll) {
-      cy.get('@pPanel').scrollIntoView();
-    }
-    return cy.get('@pPanel');
-  } else if (options.toggle === true) {
-    cy.get('@pPanel').then(($el: any) => {
-      const initiallyCollapsed = $el.hasClass('p-panel-collapsed');
-      cy.wrap($el).find('.p-panel-header').find('p-button').pButton({click: true});
-      if (initiallyCollapsed) {
-        cy.wrap($el).should('have.class', 'p-panel-expanded');
-        if (!options?.doNotScroll) {
-          cy.wrap($el).find('.p-panel-content-container').scrollIntoView();
-        }
-      } else {
-        cy.wrap($el).should('have.class', 'p-panel-collapsed');
+      cy.get('@pPanel').children('.p-panel-header').find(toggleSelector).click();
+      expectCollapsed(target);
+      if (!target && !options.doNotScroll) {
+        content().scrollIntoView();
       }
     });
   }

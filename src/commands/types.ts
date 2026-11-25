@@ -239,7 +239,7 @@ export interface PAccordionOptions extends GeneralElementOptions {
  */
 export interface PMultiSelectOptions extends GeneralElementOptions {
   /**
-   * Expected currently selected values (labels or attribute values depending on selectBy)
+   * Expected labels of the currently selected values
    */
   currentValues?: string[];
 
@@ -261,14 +261,12 @@ export interface PMultiSelectOptions extends GeneralElementOptions {
   selectBy?: 'label' | string;
 
   /**
-   * If true, the multi-select overlay will remain open after selecting values instead of being
-   * closed by a blur-click on the body.
+   * If true, the multi-select overlay remains open after the helper runs.
    */
   keepOpen?: boolean;
 
   /**
-   * When true, the multi-select overlay will be closed by clicking outside (blur) after selections
-   * are made. Default behaviour to close it by click on select element itself.
+   * When true, close the multi-select overlay by clicking outside. By default, close it with Escape.
    */
   closeByBlur?: boolean;
 

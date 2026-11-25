@@ -65,19 +65,15 @@ Running checks and tests
 npx tsc --noEmit
 ```
 
-- Run example Cypress specs (uses `cypress/` in this repo):
-
-Open GUI:
+The headless Cypress suites use a local installation of Google Chrome.
 
 ```bash
-npx cypress open
+npm test
 ```
 
-Run headless:
-
-```bash
-npx cypress run
-```
+Run a single suite with `npm run test:component` or `npm run test:e2e`. The E2E script starts and stops
+the Angular fixture app on `http://127.0.0.1:4200`. For interactive E2E runs, start the app with
+`npm start -- --host 127.0.0.1` and open the runner with `npx cypress open --e2e`.
 
 Local development (linking / building)
 -------------------------------------
@@ -172,9 +168,10 @@ Follow these steps to add a new helper (example: `pCheckbox`):
 
 - Export any helper functions from `lib/commands/index.ts` so they can be imported from the package root.
 
-6. Add a Cypress spec
+6. Add Cypress coverage
 
 - Add an example spec in `cypress/<name>.cy.ts` demonstrating the helper in both usage modes (parent and chainable).
+- Add the component to `cypress/fixtures/app/` and exercise the helper in `cypress/e2e/` with a browser-visible result.
 - Make sure the spec is stable and does not rely on external network resources.
 
 7. Update docs and README
@@ -185,7 +182,7 @@ Follow these steps to add a new helper (example: `pCheckbox`):
 
 ```bash
 npx tsc --noEmit
-npx cypress run --spec "cypress/<name>.cy.ts"
+npm test
 ```
 
 Coding style and guidelines

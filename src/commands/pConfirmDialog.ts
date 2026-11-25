@@ -5,10 +5,12 @@ import Chainable = Cypress.Chainable;
 declare var cy: any;
 
 export const DEFAULT_SELECTOR = '.p-confirmdialog';
-const DEFAULT_TITLE = '.p-confirmdialog .p-dialog-title';
-const DEFAULT_MESSAGE = '.p-confirmdialog .p-confirmdialog-message';
-const DEFAULT_ACCEPT = '.p-confirmdialog .p-confirmdialog-accept-button';
-const DEFAULT_REJECT = '.p-confirmdialog .p-confirmdialog-reject-button';
+const titleSelector = '.p-dialog-title';
+const messageSelector = '.p-confirmdialog-message';
+const actionSelectors = {
+  accept: '.p-confirmdialog-accept-button',
+  reject: '.p-confirmdialog-reject-button',
+};
 
 /**
  * Core logic for testing PrimeNG ConfirmDialog component
@@ -20,33 +22,41 @@ export function pConfirmDialogCore(
   element: Chainable<any>,
   options: PConfirmDialogOptions = {}
 ): Chainable<any> | undefined {
-  element.as('pConfirmDialog');
+  element
+    .should('have.length', 1)
+    .then(($target: JQuery<HTMLElement>) =>
+      $target.is(DEFAULT_SELECTOR) ? cy.wrap($target) : cy.wrap($target).find(DEFAULT_SELECTOR)
+    )
+    .as('pConfirmDialog');
+
+  const dialog = () => cy.get('@pConfirmDialog');
 
   // Ensure visibility unless explicitly disabled
-  if (!options?.doNotScroll) {
-    cy.get(DEFAULT_SELECTOR).scrollIntoView();
+  if (!options.doNotScroll) {
+    dialog().scrollIntoView();
   }
 
-  cy.get(DEFAULT_SELECTOR).should('be.visible');
+  dialog().should('be.visible');
 
   if (options.expectedTitle) {
-    cy.get(DEFAULT_TITLE).should('contain.text', options.expectedTitle);
+    dialog().find(titleSelector).should('contain.text', options.expectedTitle);
   }
   if (options.expectedText) {
-    cy.get(DEFAULT_MESSAGE).should('contain.text', options.expectedText);
+    dialog().find(messageSelector).should('contain.text', options.expectedText);
   }
 
-  if (options.close) {
-    if (options.close === 'accept') {
-      cy.get(DEFAULT_ACCEPT).click();
-    } else if (options.close === 'reject') {
-      cy.get(DEFAULT_REJECT).click();
-    }
-    cy.get(DEFAULT_SELECTOR).should('not.exist');
-    return undefined
-  } else {
-    return cy.get(DEFAULT_SELECTOR);
+  const action = options.close;
+  if (action) {
+    dialog().then(($dialog: JQuery<HTMLElement>) => {
+      cy.wrap($dialog).find(actionSelectors[action]).click();
+      cy.wrap($dialog).should(($closedDialog: JQuery<HTMLElement>) => {
+        expect(Cypress.dom.isDetached($closedDialog), 'dialog removed').to.equal(true);
+      });
+    });
+    return undefined;
   }
+
+  return dialog();
 }
 
 /**

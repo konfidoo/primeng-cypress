@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, signal} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {MultiSelectModule} from 'primeng/multiselect';
 
@@ -323,13 +323,10 @@ describe('pMultiSelect.cy.ts', () => {
 
     mountWithMultiSelectImports(TestHostComponent);
 
-    let capturedError: any | null = null;
-
-    // Capture Cypress fail event so we can assert on the error manually
-    // @ts-ignore
-    cy.on('fail', (err: any) => {
-      capturedError = err;
-      // Prevent Cypress from failing the test immediately; we will assert on the error later
+    cy.on('fail', (error: Error) => {
+      expect(error.message).to.include(
+        'clearValues is true but no .p-multiselect-clear-icon is present.'
+      );
       return false;
     });
 
@@ -339,17 +336,7 @@ describe('pMultiSelect.cy.ts', () => {
         selectValues: ['Rome']
       })
       .then(() => {
-        if (!capturedError) {
-          throw new Error('Expected clearValues to emit an error when no clear icon is configured');
-        }
-
-        if (
-          !/clearValues is true but no \.p-multiselect-clear-icon is present\. Make sure \[showClear\]="true" is configured\./.test(
-            capturedError.message
-          )
-        ) {
-          throw capturedError;
-        }
+        throw new Error('Expected clearValues to emit an error when no clear icon is configured');
       });
   });
 
@@ -415,75 +402,42 @@ describe('pMultiSelect.cy.ts', () => {
     cy.get('.p-multiselect-panel, .p-multiselect-overlay').should('not.exist');
   });
 
-  it('handles asynchronous re-render of the host component (framework re-rendered asynchronously)', () => {
+  it('waits for asynchronously loaded options while the overlay is open', () => {
     @Component({
       imports: [MultiSelectModule, FormsModule],
-      standalone: true,
       template: `
         <p-multiselect
           id="multi-async"
-          [options]="cities"
+          [options]="cities()"
           [(ngModel)]="selectedCities"
           optionLabel="name"
           placeholder="Select Cities"
         ></p-multiselect>
-      `
+      `,
     })
     class TestHostComponent {
-      // Start with a limited set of options and no selection
-      protected cities: City[] = [
-        {name: 'New York', code: 'NY'},
-        {name: 'Rome', code: 'RM'}
-      ];
+      protected readonly cities = signal(BASE_CITIES.slice(0, 2));
+      protected selectedCities = [BASE_CITIES[1]];
 
-      protected selectedCities: City[] = [];
-
-      // Simulate an async re-render where options and selection change over time
-      ngOnInit() {
-        // Pre-select Rome immediately
-        this.selectedCities = [{name: 'Rome', code: 'RM'}];
-
-        // Later, asynchronously extend the options list to more cities
-        setTimeout(() => {
-          this.cities = [
-            {name: 'New York', code: 'NY'},
-            {name: 'Rome', code: 'RM'},
-            {name: 'London', code: 'LDN'},
-            {name: 'Paris', code: 'PRS'},
-            {name: 'Berlin', code: 'BER'}
-          ];
-        }, 100);
+      loadCities(): void {
+        setTimeout(() => this.cities.set(BASE_CITIES), 100);
       }
     }
 
-    mountWithMultiSelectImports(TestHostComponent);
-
-    // First assert on the initial selection and select an additional value before the async re-render
-    // expectedOptionCount is 2 here because only two options are available initially
-    cy.get('#multi-async').pMultiSelect({
-      currentValues: ['Rome'],
-      selectValues: ['Paris'],
-      expectedOptionCount: 2,
-      keepOpen: true,
+    cy.mount(TestHostComponent).then(({component}) => {
+      cy.get('#multi-async').pMultiSelect({
+        currentValues: ['Rome'],
+        expectedOptionCount: 2,
+        keepOpen: true,
+      });
+      cy.then(() => component.loadCities());
     });
 
-    // Wait for the async re-render to complete and update the available options
-    cy.wait(150);
-
-    // After re-render there are 5 options; validate current selection and extend it further
     cy.get('#multi-async').pMultiSelect({
-      currentValues: ['Rome', 'Paris'],
-      selectValues: ['London'],
+      selectValues: ['Paris', 'London'],
       expectedOptionCount: 5,
       keepOpen: true,
     });
-
-    // Finally, validate the full selection after all async updates have settled
-    cy.get('#multi-async').pMultiSelect({
-      currentValues: ['Rome', 'Paris', 'London'],
-      expectedOptionCount: 5,
-      keepOpen: true,
-    });
+    cy.get('#multi-async').pMultiSelect({currentValues: ['Rome', 'Paris', 'London']});
   });
-
 });

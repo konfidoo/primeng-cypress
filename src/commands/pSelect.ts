@@ -61,13 +61,20 @@ export function pSelectCore(
     cy.get('@pSelect').should('contain.text', opts.currentValue);
   }
 
-  // if no selection requested, return early
-  if (opts.selectValue === undefined) {
+  const {selectValue, expectedOptionCount} = opts;
+  const expectedOptions = Array.isArray(opts.expectedOptions) ? opts.expectedOptions : [];
+  if (selectValue === undefined && expectedOptionCount === undefined && expectedOptions.length === 0) {
     return cy.get('@pSelect');
   }
 
-  // open overlay
-  cy.get('@pSelect').should('be.visible').click();
+  const combobox = () => cy.get('@pSelect').find('[role="combobox"]');
+  let openedOverlay = false;
+  combobox().then(($combobox: JQuery<HTMLElement>) => {
+    if ($combobox.attr('aria-expanded') !== 'true') {
+      openedOverlay = true;
+      cy.get('@pSelect').should('be.visible').click();
+    }
+  });
 
   // overlay selector used by PrimeNG select
   const overlaySelector = '.p-select-overlay';
@@ -83,26 +90,35 @@ export function pSelectCore(
   }
 
   // expected option count
-  if (opts.expectedOptionCount !== undefined) {
-    cy.get(overlaySelector).find(optionSelector).should('have.length', opts.expectedOptionCount);
+  const overlayOptions = () => cy.get(overlaySelector).find(optionSelector);
+  if (expectedOptionCount !== undefined) {
+    overlayOptions().should('have.length', expectedOptionCount);
   }
 
-  // expected options list (labels)
-  if (opts.expectedOptions && Array.isArray(opts.expectedOptions)) {
-    cy.get(overlaySelector)
-      .find(optionSelector)
-      .should('have.length.at.least', opts.expectedOptions.length)
-      .each(($opt: any, idx: number) => {
-        const expected = opts.expectedOptions?.[idx] ?? '';
-        cy.wrap($opt).should('contain.text', expected);
-      });
+  for (const [index, label] of expectedOptions.entries()) {
+    overlayOptions().eq(index).should('contain.text', label);
+  }
+
+  if (selectValue === undefined) {
+    cy.then(() => {
+      if (openedOverlay) {
+        combobox().trigger('keydown', {
+          eventConstructor: 'KeyboardEvent',
+          key: 'Escape',
+          code: 'Escape',
+          force: true,
+        });
+        cy.get(overlaySelector).should('not.exist');
+      }
+    });
+    return cy.get('@pSelect');
   }
 
   // find option by label or id or attribute
   const by = opts.selectBy ?? 'label';
   if (by === 'label') {
     cy.get(overlaySelector)
-      .contains(optionSelector, opts.selectValue ?? '')
+      .contains(optionSelector, selectValue)
       .click();
   } else {
     // treat `by` as an attribute name, for example 'data-optionId'
@@ -113,13 +129,13 @@ export function pSelectCore(
         const arr = Array.from($options.toArray()) as HTMLElement[];
         const found = arr.find((el: HTMLElement) => {
           const attr = el.getAttribute(attrName) ?? '';
-          return attr === opts.selectValue;
+          return attr === selectValue;
         });
         if (found) {
           cy.wrap(found).click();
         } else {
           // fallback: selector by attribute
-          cy.get(overlaySelector).find(`[${attrName}="${opts.selectValue}"]`).click();
+          cy.get(overlaySelector).find(`[${attrName}="${selectValue}"]`).click();
         }
       });
   }
@@ -133,14 +149,10 @@ export function pSelectCore(
   // post-selection validation
   if (!opts.skipValidation) {
     cy.get(overlaySelector).should('not.exist');
-    if (opts.selectBy === 'label') {
-      if (opts.selectValue !== undefined) {
-        cy.get('@pSelect').should('contain.text', opts.selectValue);
-      }
+    if (by === 'label') {
+      cy.get('@pSelect').should('contain.text', selectValue);
     } else {
-      if (opts.selectValue !== undefined) {
-        cy.get('@pSelect').find(`[${opts.selectBy}="${opts.selectValue}"]`).should('exist');
-      }
+      cy.get('@pSelect').find(`[${by}="${selectValue}"]`).should('exist');
     }
   }
 

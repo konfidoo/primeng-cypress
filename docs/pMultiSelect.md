@@ -37,7 +37,7 @@ cy.get('#cities').pMultiSelect({
   keepOpen: true,
 });
 
-// Close the overlay by clicking outside (blur) instead of on the host element
+// Close the overlay by clicking outside (blur)
 cy.get('#cities').pMultiSelect({
   selectValues: ['London'],
   closeByBlur: true,
@@ -58,15 +58,14 @@ cy.get('#cities-no-scroll').pMultiSelect({
 
 ## Options
 
-- `currentValues?: string[]` expected currently selected values (labels or attribute values, depending on `selectBy`).
+- `currentValues?: string[]` expected labels of the currently selected values.
 - `selectValues?: string[]` values to select in the multiselect; interpreted according to `selectBy`.
 - `expectedOptionCount?: number` expected number of options in the multiselect overlay panel.
 - `selectBy?: 'label' | string` how to locate options: use `'label'` to match by visible label text (default) or provide
   a custom attribute name (for example `'data-code'`).
 - `keepOpen?: boolean` when true, keeps the overlay open after selecting values instead of closing it at the end of the
   helper.
-- `closeByBlur?: boolean` when true, closes the overlay by clicking on the page background (blur) instead of clicking
-  the host element.
+- `closeByBlur?: boolean` when true, closes the overlay by clicking on the page background. The default uses Escape.
 - `clearValues?: boolean` when true, clears existing selections by clicking the clear icon; requires the component to be
   configured with `[showClear]="true"`.
 - `isDisabled?: boolean` when true, asserts that the host is disabled (via `disabled`, `aria-disabled="true"` or

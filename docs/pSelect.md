@@ -10,6 +10,9 @@ cy.pSelect('#country', {selectValue: 'Germany', selectBy: 'label'});
 
 // Chainable form
 cy.get('p-select').pSelect({selectValue: 'country_2', selectBy: 'id'});
+
+// Inspect the option list without changing the current selection
+cy.pSelect('#country', {expectedOptionCount: 2, expectedOptions: ['Germany', 'France']});
 ```
 
 ## Options
@@ -18,7 +21,9 @@ cy.get('p-select').pSelect({selectValue: 'country_2', selectBy: 'id'});
 - `selectValue?: string` — the value to select; interpreted according to `selectBy`.
 - `selectBy?: 'label' | 'id'` — whether `selectValue` refers to the option label (default) or option id/value.
 - `expectedOptionCount?: number` — assert the number of options in the overlay.
-- `expectedOptions?: string[]` — expected option labels (order-sensitive when provided).
+- `expectedOptions?: string[]` — assert the labels of the first options in the given order.
+  Both option checks work independently of `selectValue`. If the helper opens the overlay just for inspection, it closes it again.
+- `waitFor?: string | string[]` — wait for one or more Cypress intercept aliases after selecting a value.
 - `skipValidation?: boolean` — when true, do not validate the selected value after clicking (useful when the host label
   is not stable).
 - `waitForOverlayAnimation?: boolean` — when true, wait until the overlay wrapper no longer has PrimeNG's
