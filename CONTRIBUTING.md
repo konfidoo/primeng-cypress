@@ -38,7 +38,7 @@ npm install
 # in this repository
 npm link
 # in the consuming project
-npm link @konfidoo/primeng-cypress
+npm link @konfidoo2/primeng-cypress
 ```
 
 Install dependencies (alternate package manager)
@@ -86,7 +86,7 @@ When you work on this repository and want to consume it from a local consumer pr
 ```bash
 cd /path/to/primeng-cypress
 npm run build:lib   # builds lib/*.js and lib/*.d.ts
-npm link            # registers a global symlink for @konfidoo/primeng-cypress
+npm link            # registers a global symlink for @konfidoo2/primeng-cypress
 ```
 
 2. In the consuming project: link the package
@@ -94,8 +94,8 @@ npm link            # registers a global symlink for @konfidoo/primeng-cypress
 ```bash
 cd /path/to/consumer-project
 # remove any existing installation first to avoid shadowing
-rm -rf node_modules/@konfidoo/primeng-cypress
-npm link @konfidoo/primeng-cypress
+rm -rf node_modules/@konfidoo2/primeng-cypress
+npm link @konfidoo2/primeng-cypress
 ```
 
 3. In the consuming project's Cypress support file (runtime registration):
@@ -145,28 +145,25 @@ Follow these steps to add a new helper (example: `pCheckbox`):
 
 1. Implement the core testing logic
 
-- Create a core function implementing the checks in `lib/commands/<name>.ts` (example `lib/commands/pCheckbox.ts`).
+- Create a core function implementing the checks in `src/commands/<name>.ts` (example `src/commands/pCheckbox.ts`).
 - Keep logic pure and testable: accept a Cypress chainable (or selector) and an options object.
 
 2. Add TypeScript types
 
-- Add interfaces to `lib/commands/types.ts` or a new file `lib/commands/<name>.types.ts` and export them from
-  `lib/commands/index.ts` using `export type` for type-only exports.
+- Add interfaces to `src/commands/types.ts` and export them from `src/commands/index.ts` using `export type`.
 
 3. Add command registration
 
-- Add a function to `lib/commands/commands.ts` if needed or update the existing `registerPrimeNGCommands()` to
-  register the new command:
-  - Parent command: `Cypress.Commands.add('pCheckbox', (selector, options) => {...})`
-  - Chainable command: `Cypress.Commands.add('pCheckbox', { prevSubject: 'element' }, (subject, options) => {...})`
+- Update `registerPrimeNGCommands()` in `src/commands/commands.ts`. Use an optional Cypress subject for commands
+  that support both parent and chainable forms.
 
 4. Add typings for the custom command
 
-- Update `lib/commands/cypress.d.ts` to include the Chainable augmentation for the new command so editors pick it up.
+- Update `src/commands/cypress.d.ts` to include the Chainable augmentation for the new command.
 
 5. Export public API
 
-- Export any helper functions from `lib/commands/index.ts` so they can be imported from the package root.
+- Export any helper functions from `src/commands/index.ts` so they can be imported from the package root.
 
 6. Add Cypress coverage
 
@@ -204,12 +201,14 @@ Commit messages and PR process
 
 Publishing & releasing
 ----------------------
-If this project will be published to npm, the recommended flow is:
-
-1. Add a `prepare` or `build` script in `package.json` to transpile or prepare files if needed.
-2. Update `package.json` `version` and run `npm publish` (or use `npm version <patch|minor|major>` then `npm publish`).
-
-For local testing in a consuming repo, `npm link` or `npm pack` are convenient methods.
+1. Update `package.json` and `package-lock.json` with `npm version <version> --no-git-tag-version`.
+   Update the README compatibility table and prepare release notes from the changes since the previous version.
+2. Run `npx tsc --noEmit`, `npm run build:lib`, `npm test` and `npm pack --dry-run` on the release candidate.
+   Merge the release preparation through a pull request into `main`.
+3. Create an annotated `vX.Y.Z` tag for the merged release commit and push the tag. The publish workflow checks
+   that the tag matches the package version and stages the package on npm.
+4. Create the GitHub Release using that tag and the prepared release notes. A maintainer approves the staged
+   package with 2FA. Verify the exact package version in the public npm registry after approval.
 
 Support and questions
 ---------------------
