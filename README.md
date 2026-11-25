@@ -28,19 +28,24 @@ another project.
 
 All commands support a generic set of options: [general command options](docs/GeneralElementOptions.md)
 
-> Stability note: The public command API (command names and option shapes) may still change while the package version is
-> below `1.0.0`. Consumers should expect possible breaking changes to commands/options until the project reaches
-`1.0.0`.
-> Pin the package version in downstream projects or review changelogs before upgrading.
-
 ## Not yet supported components
 
 - Any PrimeNG component beyond the helpers listed above (e.g., `pTabMenu`, `pAccordion` wrappers) is not currently
   exposed by this library.
 
+## PrimeNG compatibility
+
+| npm package | Library version | PrimeNG series | PrimeNG version in the lockfile |
+| --- | --- | --- | --- |
+| `@konfidoo2/primeng-cypress` | 1.1.0 | 22.1 | 22.1.5 |
+| `@konfidoo2/primeng-cypress` | 0.7.0, 1.0.0–1.0.2 | 21.x | 21.1.3 |
+| `@konfidoo/primeng-cypress` (previous npm scope) | 0.1.0–0.6.1 | 21.x | 21.0.1 |
+
+The 1.1.0 component and E2E suites cover PrimeNG 22.1.5 with Angular 22.1.
+The 1.1.0 component suite also passes with PrimeNG 21.1.3.
+
 ## Prerequisites
 
-- PrimeNG 22.1.5 with Angular 22.1 is covered by this repository's component and E2E tests.
 - A working Cypress setup in the consuming project.
 - Node.js 24.15 or newer on the 24.x line for local development of this library.
 
@@ -50,10 +55,16 @@ There are multiple ways to consume this helper library from another project:
 
 ### 1) As a published package
 
-Simply install the package from npm:
+For PrimeNG 22.1, install version `1.1.0` once it is available on npm.
 
 ```bash
-npm install @konfidoo2/primeng-cypress --save-dev
+npm install @konfidoo2/primeng-cypress@1.1.0 --save-dev
+```
+
+For PrimeNG 21, version `1.0.2` is available with the original command behavior.
+
+```bash
+npm install @konfidoo2/primeng-cypress@1.0.2 --save-dev
 ```
 
 Then in your `cypress/support/commands.ts` (or `cypress/support/e2e.ts`) add:
